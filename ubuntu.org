@@ -1,0 +1,1679 @@
+这里是个人的ubuntu使用笔记
+
+* bc计算器
+
+终端输入ｂｃ启动
+运算符：+ - * /
+
+其中/默认为结果取整，输出小数时，执行语句scale=number 设定小数点位数ｎｕｍｂｅｒ。
+退出:输入quit
+
+* # 如何创建ubuntu新用户？
+
+          首先打开终端，输入：sudo adduser username，系统会提示以下信息：
+
+           正在添加用户“username”...
+
+           正在添加新组“username”(1001)...
+
+           正在添加新用户“username”(1001)到组“username”...
+
+           创建主目录“/home/username”...
+
+            正在从“/etc、skel”复制文件...
+
+            输入新的 UNIX 口令：(此处大家注意，不是输入你当前用户的密码，而是输入你要创建新用户的密码)
+
+            重新输入新的 UNIX 口令：(再输一次即可)
+
+            passwd：已成功更新密码
+
+            Changing the user information for username
+            Enter the new value, or press ENTER for the default
+            Full Name []: yangyang (输入新用户的名称)
+            Room Number []:
+            Work Phone []:
+            Home Phone []:
+            Other []:
+这个信息是否正确? [Y/n] y
+
+
+
+* 文件
+
+** 文件格式转换
+
+1. pandoc 
+   它可以将文档在 Markdown、LaTeX、reStructuredText、HTML、Word docx 等多种标记格式之间相互转换，并支持输出 PDF、EPUB、HTML 幻灯片等多种格式。该程序被称为格式转换界的 “瑞士军刀”。
+2. pdftotxt
+
+
+*** pandoc 教程
+
+pandoc name -o name  
+
+快速简便
+**** 1. 安装与测试
+pandoc --list-input-formats
+**** 2. 命令格式
+
+** bug
+*** 　因文件编码导致的txt乱码
+
+你打开的txt文件有可能是GBK编码的，而linux系统用的是UTF－8编码，打开终端，进入txt所在的文件夹，用以下命令
+iconv -f GBK -t UTF-8 加上文件名如
+iconv -f GBK -t UTF-8 in.txt
+就可以在终端看到正常的文件了
+iconv -f GBK -t UTF-8 in.txt >in2.txt
+就可以把转换后的内容存入in2.txt供以后查看 
+* 分区
+一个分区方案
+1. 挂载点/；主分区；安装系统和软件；大小为40G；分区格式为ext4；
+
+2. 挂载点/home；逻辑分区；相当于“我的文档”；大小为硬盘剩下的; 分区格式ext4；
+
+3. swap；逻辑分区；充当虚拟内存；大小等于内存大小（本人6g）；分区格式为swap
+
+4.  /boot ；引导分区；逻辑分区； 大小为3g；分区格式为ext4；
+
+5.空出20g留用
+* 用户组与用户
+cat /etc/group
+sudo adduser work vboxusers
+
+* 终端
+变量的特别之处：zhang
+
+* 系统快照
+* 系统引导
+
+* 系统的安装审核
+关于系统的安装审核，系统的一些性能指标
+*** 软件部分
+系统审核
+
+能否安装虚拟机
+
+有控制台吗
+
+解压缩卡顿吗？
+*** 初始问题
+**** 安装软件
+1. wicd
+2.
+3. 
+分
+**** 查看初始情况  
+1. 端口表
+2. 驱动表
+rfkill:
+3. 文件结构表
+
+* 英伟达显卡nvidia
+英伟达
+*** 不建议使用，曾经使用过两次，不是每次都奏效
+
+
+$sudo apt-get remove --purge nvidia*
+
+$sudo apt-get update
+
+  $sudo apt-get install dkms build-essential linux-headers-generic
+
+$sudo nano /etc/modprobe.d/blacklist.conf
+
+  在文件 blacklist-nouveau.conf 中加入如下内容：
+  blacklist nouveau
+  blacklist lbm-nouveau
+
+$sudo service lightdm stop
+
+安装
+* ubuntu环境
+* 快捷键：
+[[https://www.linuxidc.com/Linux/2015-05/117414.htm][一些非常棒的命令]]
+sudo pm-hibernate : 休眠
+sudo pm-suspend： 挂起
+sudo pm-powersave ：省电模式
+
+* 内存问题
+不应该是4G吗？现在只有3.8G了
+* 桌面
+新装的ubuntu18.0简直有毒，关闭桌面时，不能开着emacs，virtualbox，不然桌面就会卡死。问题目前不知道在哪里。
+恢复桌面只能从杀死id开始，不能直接restart ，stop start ，这两种操作无效。
+* DONE 网络问题
+CLOSED: [2019-02-25 一 19:16] SCHEDULED: <2019-01-31 四>
+:LOGBOOK:  
+- State "DONE"       from "WAITING"    [2019-02-25 一 19:16]
+- State "WAITING"    from "TODO"       [2019-02-08 五 16:51] \\
+  直到能够测试网卡好坏再解决这个问题
+:END:      
+** log
+*** lspci -vvnn | grep -A 9 Network
+
+输出为null
+*** lshw -C network
+WARNING: you should run this program as super-user.
+  *-network
+       description: Ethernet interface
+       product: RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+       vendor: Realtek Semiconductor Co., Ltd.
+       physical id: 0
+       bus info: pci@0000:06:00.0
+       logical name: enp6s0
+       version: 10
+       serial: 20:47:47:70:92:bd
+       size: 10Mbit/s
+       capacity: 1Gbit/s
+       width: 64 bits
+       clock: 33MHz
+       capabilities: bus_master cap_list ethernet physical tp mii 10bt 10bt-fd 100bt 100bt-fd 1000bt 1000bt-fd autonegotiation
+       configuration: autonegotiation=on broadcast=yes driver=r8169 driverversion=2.3LK-NAPI duplex=half firmware=rtl8168g-3_0.0.1 04/23/13 latency=0 link=no multicast=yes port=MII speed=10Mbit/s
+       resources: irq:18 ioport:3000(size=256) memory:a1904000-a1904fff memory:a1900000-a1903fff
+
+**** CANCELLED 没有无线网卡 怎么回事
+CLOSED: [2019-05-26 日 16:12]
+:LOGBOOK:  
+- State "CANCELLED"  from "DONE"       [2019-05-26 日 16:12] \\
+  最后也没弄明白怎么回事，按照一篇博客就修好了。
+- State "DONE"       from "PROJECT"    [2019-05-26 日 16:12]
+- State "PROJECT"    from "DONE"       [2019-05-26 日 16:12]
+- State "DONE"       from "PROJECT"    [2019-05-26 日 16:12]
+- State "PROJECT"    from "DONE"       [2019-05-26 日 16:12]
+- State "DONE"       from "NEXT"       [2019-05-26 日 16:12]
+:END:      
+
+*****  猜测：未安装驱动
+
+
+***** 猜测：驱动安装未加载
+
+***** 猜测：加载但未识别
+
+*** rfkill list
+0: hci0: Bluetooth
+	Soft blocked: no
+	Hard blocked: no  计算机无线网络硬开关关闭
+
+*** 关机 开机
+*** 中间不知道干了什么，后来发生了差别
+*** rfkill list all
+0: hci0: Bluetooth
+	Soft blocked: no
+	Hard blocked: no
+1: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+*** work@work75:~/note/ubuntu$ lshw -C network
+WARNING: you should run this program as super-user.
+ 
+**** *-network
+       description: Ethernet interface
+       product: RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+       vendor: Realtek Semiconductor Co., Ltd.
+       physical id: 0
+       bus info: pci@0000:06:00.0
+       logical name: enp6s0
+       version: 10
+       serial: 20:47:47:70:92:bd
+       size: 10Mbit/s
+       capacity: 1Gbit/s
+       width: 64 bits
+       clock: 33MHz
+       capabilities: bus_master cap_list ethernet physical tp mii 10bt 10bt-fd 100bt 100bt-fd 1000bt 1000bt-fd autonegotiation
+       configuration: autonegotiation=on broadcast=yes driver=r8169 driverversion=2.3LK-NAPI duplex=half firmware=rtl8168g-3_0.0.1 04/23/13 latency=0 link=no multicast=yes port=MII speed=10Mbit/s
+       resources: irq:18 ioport:3000(size=256) memory:a1a04000-a1a04fff memory:a1a00000-a1a03fff
+ 
+**** *-generic DISABLED
+       description: Wireless interface
+       product: Illegal Vendor ID
+       vendor: Illegal Vendor ID
+       physical id: 0
+       bus info: pci@0000:07:00.0
+       logical name: wlp7s0
+       version: ff
+       serial: b4:6d:83:86:8c:38
+       width: 32 bits
+       clock: 66MHz
+       capabilities: bus_master vga_palette cap_list ethernet physical wireless
+       configuration: broadcast=yes driver=iwlwifi driverversion=4.18.0-13-generic firmware=17.948900127.0 latency=255 link=no maxlatency=255 mingnt=255 multicast=yes wireless=IEEE 802.11
+       resources: irq:33 memory:a1900000-a1901fff
+WARNING: output may be incomplete or inaccurate, you should run this program as super-user.
+work@work75:~/note/ubuntu$ 
+
+*** work@work75:~/note/ubuntu$ iwlist wlan0 scanning
+wlan0     Interface doesn't support scanning.
+
+work@work75:~/note/ubuntu$ 
+*** DONE 注销再打开 无效
+CLOSED: [2019-01-29 二 12:52]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-29 二 12:52]
+:END:      
+*** work@work75:~/note/ubuntu$ lshw -C network
+WARNING: you should run this program as super-user.
+  *-network
+       description: Ethernet interface
+       product: RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+       vendor: Realtek Semiconductor Co., Ltd.
+       physical id: 0
+       bus info: pci@0000:06:00.0
+       logical name: enp6s0
+       version: 10
+       serial: 20:47:47:70:92:bd
+       size: 10Mbit/s
+       capacity: 1Gbit/s
+       width: 64 bits
+       clock: 33MHz
+       capabilities: bus_master cap_list ethernet physical tp mii 10bt 10bt-fd 100bt 100bt-fd 1000bt 1000bt-fd autonegotiation
+       configuration: autonegotiation=on broadcast=yes driver=r8169 driverversion=2.3LK-NAPI duplex=half firmware=rtl8168g-3_0.0.1 04/23/13 latency=0 link=no multicast=yes port=MII speed=10Mbit/s
+       resources: irq:18 ioport:3000(size=256) memory:a1a04000-a1a04fff memory:a1a00000-a1a03fff
+  *-generic DISABLED
+       description: Wireless interface
+       product: Illegal Vendor ID
+       vendor: Illegal Vendor ID
+       physical id: 0
+       bus info: pci@0000:07:00.0
+       logical name: wlp7s0
+       version: ff
+       serial: b4:6d:83:86:8c:38
+       width: 32 bits
+       clock: 66MHz
+       capabilities: bus_master vga_palette cap_list ethernet physical wireless
+       configuration: broadcast=yes driver=iwlwifi driverversion=4.18.0-13-generic firmware=17.948900127.0 latency=255 link=no maxlatency=255 mingnt=255 multicast=yes wireless=IEEE 802.11
+       resources: irq:33 memory:a1900000-a1901fff
+WARNING: output may be incomplete or inaccurate, you should run this program as super-user.
+work@work75:~/note/ubuntu$ 
+*** DONE rfill 打开一个 
+CLOSED: [2019-01-29 二 13:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-29 二 13:14]
+:END:      
+*** rfkill list 无变化
+0: hci0: Bluetooth
+	Soft blocked: no
+	Hard blocked: no
+1: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+*** rfkill block 0  锁了之后 才发生变化 这个yes和no是关闭 和打开； 是锁上的意思
+work@work75:~/note/ubuntu$ rfkill list
+0: hci0: Bluetooth
+	Soft blocked: yes
+	Hard blocked: no
+1: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+*** 不是rfkill的问题 rfkill正常
+*** iwlist wlan0 scanning
+dont support
+*** iwlist scanning
+lo        Interface doesn't support scanning.
+
+enp6s0    Interface doesn't support scanning.
+
+wlp7s0    Failed to read scan data : Network is down
+猜测wlp7s0为wifi网络
+*** restart network  没有差别
+sudo service network-manager restart
+[sudo] work 的密码： hello
+
+work@work75:~/note/ubuntu$ sudo /etc/init.d/network-manager stop
+Stopping network-manager (via systemctl): network-manager.service.
+work@work75:~/note/ubuntu$ sudo /etc/init.d/network-manager start
+Starting network-manager (via systemctl): network-manager.service.
+work@work75:~/note/ubuntu$ 
+*** 查看网卡情况 lspci -v
+00:00.0 Host bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor DRAM Controller (rev 06)
+	Subsystem: Dell Xeon E3-1200 v3/4th Gen Core Processor DRAM Controller
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: <access denied>
+	Kernel modules: ie31200_edac
+
+00:01.0 PCI bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor PCI Express x16 Controller (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:01.1 PCI bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor PCI Express x8 Controller (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	I/O behind bridge: 00004000-00004fff
+	Memory behind bridge: a0000000-a10fffff
+	Prefetchable memory behind bridge: 00000000c0000000-00000000d1ffffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:02.0 VGA compatible controller: Intel Corporation 4th Gen Core Processor Integrated Graphics Controller (rev 06) (prog-if 00 [VGA controller])
+	Subsystem: Dell 4th Gen Core Processor Integrated Graphics Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 31
+	Memory at a1400000 (64-bit, non-prefetchable) [size=4M]
+	Memory at b0000000 (64-bit, prefetchable) [size=256M]
+	I/O ports at 5000 [size=64]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+00:03.0 Audio device: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor HD Audio Controller (rev 06)
+	Subsystem: Dell Xeon E3-1200 v3/4th Gen Core Processor HD Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 35
+	Memory at a1b1c000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:04.0 Signal processing controller: Intel Corporation Device 0c03 (rev 06)
+	Flags: fast devsel, IRQ 11
+	Memory at a1b10000 (64-bit, non-prefetchable) [disabled] [size=32K]
+	Capabilities: <access denied>
+
+00:14.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB xHCI (rev 05) (prog-if 30 [XHCI])
+	Subsystem: Dell 8 Series/C220 Series Chipset Family USB xHCI
+	Flags: bus master, medium devsel, latency 0, IRQ 26
+	Memory at a1b00000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: xhci_hcd
+
+00:16.0 Communication controller: Intel Corporation 8 Series/C220 Series Chipset Family MEI Controller #1 (rev 04)
+	Subsystem: Dell 8 Series/C220 Series Chipset Family MEI Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 30
+	Memory at a1b26000 (64-bit, non-prefetchable) [size=16]
+	Capabilities: <access denied>
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:1a.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB EHCI #2 (rev 05) (prog-if 20 [EHCI])
+	Subsystem: Dell 8 Series/C220 Series Chipset Family USB EHCI
+	Flags: bus master, medium devsel, latency 0, IRQ 16
+	Memory at a1b24000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+
+00:1b.0 Audio device: Intel Corporation 8 Series/C220 Series Chipset High Definition Audio Controller (rev 05)
+	Subsystem: Dell 8 Series/C220 Series Chipset High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 34
+	Memory at a1b18000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #1 (rev d5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=04, subordinate=04, sec-latency=0
+	I/O behind bridge: 00002000-00002fff
+	Memory behind bridge: 9fb00000-9fcfffff
+	Prefetchable memory behind bridge: 000000009fd00000-000000009fefffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.2 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #3 (rev d5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	Bus: primary=00, secondary=06, subordinate=06, sec-latency=0
+	I/O behind bridge: 00003000-00003fff
+	Memory behind bridge: a1a00000-a1afffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.3 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #4 (rev d5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 19
+	Bus: primary=00, secondary=07, subordinate=07, sec-latency=0
+	Memory behind bridge: a1900000-a19fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.4 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #5 (rev d5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=08, subordinate=08, sec-latency=0
+	Memory behind bridge: a1800000-a18fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1d.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB EHCI #1 (rev 05) (prog-if 20 [EHCI])
+	Subsystem: Dell 8 Series/C220 Series Chipset Family USB EHCI
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	Memory at a1b23000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+
+00:1f.0 ISA bridge: Intel Corporation HM87 Express LPC Controller (rev 05)
+	Subsystem: Dell HM87 Express LPC Controller
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: <access denied>
+	Kernel driver in use: lpc_ich
+	Kernel modules: lpc_ich
+
+00:1f.2 SATA controller: Intel Corporation 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode] (rev 05) (prog-if 01 [AHCI 1.0])
+	Subsystem: Dell 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode]
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 28
+	I/O ports at 50b0 [size=8]
+	I/O ports at 50a0 [size=4]
+	I/O ports at 5090 [size=8]
+	I/O ports at 5080 [size=4]
+	I/O ports at 5060 [size=32]
+	Memory at a1b22000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1f.3 SMBus: Intel Corporation 8 Series/C220 Series Chipset Family SMBus Controller (rev 05)
+	Subsystem: Dell 8 Series/C220 Series Chipset Family SMBus Controller
+	Flags: medium devsel, IRQ 18
+	Memory at a1b21000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at 5040 [size=32]
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+
+00:1f.6 Signal processing controller: Intel Corporation 8 Series Chipset Family Thermal Management Controller (rev 05)
+	Subsystem: Dell 8 Series Chipset Family Thermal Management Controller
+	Flags: fast devsel, IRQ 18
+	Memory at a1b20000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel_pch_thermal
+	Kernel modules: intel_pch_thermal
+
+02:00.0 3D controller: NVIDIA Corporation GM107M [GeForce GTX 960M] (rev a2)
+	Subsystem: Dell GM107M [GeForce GTX 960M]
+	Flags: bus master, fast devsel, latency 0, IRQ 32
+	Memory at a0000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at c0000000 (64-bit, prefetchable) [size=256M]
+	Memory at d0000000 (64-bit, prefetchable) [size=32M]
+	I/O ports at 4000 [size=128]
+	Expansion ROM at a1000000 [disabled] [size=512K]
+	Capabilities: <access denied>
+	Kernel driver in use: nouveau
+	Kernel modules: nvidiafb, nouveau
+
+06:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 10)  (网卡型号 )
+	Subsystem: Dell RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	I/O ports at 3000 [size=256]
+	Memory at a1a04000 (64-bit, non-prefetchable) [size=4K]
+	Memory at a1a00000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: r8169
+	Kernel modules: r8169
+
+07:00.0 Network controller: Intel Corporation Wireless 3160 (rev ff) (prog-if ff)
+	!!! Unknown header type 7f
+	Kernel driver in use: iwlwifi
+	Kernel modules: iwlwifi
+
+08:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS522A PCI Express Card Reader (rev 01)
+	Subsystem: Realtek Semiconductor Co., Ltd. RTS522A PCI Express Card Reader
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Memory at a1800000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: rtsx_pci
+	Kernel modules: rtsx_pci
+
+
+*** 查看网卡驱动
+lspci |grep -i net
+06:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 10)
+07:00.0 Network controller: Intel Corporation Wireless 3160 (rev ff)
+work@work75:~/note/ubuntu$ iwconfig
+lo        no wireless extensions.
+
+enp6s0    no wireless extensions.
+
+wlp7s0    IEEE 802.11  ESSID:off/any  
+          Mode:Managed  Access Point: Not-Associated   Tx-Power=0 dBm   
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Power Management:on
+          
+work@work75:~/note/ubuntu$ iwconfig wlp7s0 up
+iwconfig: unknown command "up"
+
+*** 打开串口服务失败
+work@work75:~/note/ubuntu$ sudo ip link set wlp7s0 up
+RTNETLINK answers: Input/output error
+
+*** DONE 方案一： 使用wicd 需要静等充电完成
+CLOSED: [2019-01-30 三 20:43]
+:LOGBOOK:  
+- State "DONE"       from ""           [2019-01-30 三 20:43]
+:END:      
+无效，
+
+*** DONE 重新使用wicd useless
+CLOSED: [2019-01-30 三 20:47]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-30 三 20:47]
+:END:      
+
+*** DONE about netword card  for wireless
+CLOSED: [2019-01-30 三 20:54]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-30 三 20:54]
+:END:      
+how can i find this
+
+**** ifconfig -a  only two
+enp6s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 20:47:47:70:92:bd  txqueuelen 1000  (以太网)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (本地环回)
+        RX packets 805  bytes 65061 (65.0 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 805  bytes 65061 (65.0 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+*** return start for this question
+*** DONE use wicd 
+CLOSED: [2019-01-31 四 10:26]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 10:26]
+:END:      
+**** erro: 无法链接dbus
+猜测为netmanager冲突
+***** 尝试了关闭：无效
+***** sudo apt-get autoremove network-manager
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+下列软件包将被【卸载】：
+  dns-root-data dnsmasq-base libappindicator3-1 libindicator3-7 libndp0 libpkcs11-helper1 libteamdctl0 mobile-broadband-provider-info network-manager network-manager-config-connectivity-ubuntu
+  network-manager-gnome network-manager-openvpn network-manager-openvpn-gnome network-manager-pptp network-manager-pptp-gnome openvpn pptp-linux
+升级了 0 个软件包，新安装了 0 个软件包，要卸载 17 个软件包，有 7 个软件包未被升级。
+解压缩后将会空出 11.7 MB 的空间。
+您希望继续执行吗？ [Y/n] 
+(正在读取数据库 ... 系统当前共安装有 240435 个文件和目录。)
+正在卸载 dns-root-data (2018013001) ...
+正在卸载 dnsmasq-base (2.79-1) ...
+正在卸载 network-manager-gnome (1.8.18-2ubuntu2) ...
+正在卸载 libappindicator3-1 (12.10.1+18.04.20180322.1-0ubuntu1) ...
+正在卸载 libindicator3-7 (16.10.0+18.04.20180321.1-0ubuntu1) ...
+正在卸载 network-manager-config-connectivity-ubuntu (1.12.4-1ubuntu1.2) ...
+正在卸载 network-manager-pptp-gnome (1.2.8-1build1) ...
+正在卸载 network-manager-pptp (1.2.8-1build1) ...
+正在卸载 network-manager-openvpn-gnome (1.8.6-1ubuntu1) ...
+正在卸载 network-manager-openvpn (1.8.6-1ubuntu1) ...
+正在卸载 openvpn (2.4.6-1ubuntu2) ...
+正在卸载 libpkcs11-helper1:amd64 (1.25.1-1) ...
+正在卸载 mobile-broadband-provider-info (20170903-1) ...
+正在卸载 pptp-linux (1.9.0+ds-2) ...
+正在卸载 network-manager (1.12.4-1ubuntu1.2) ...
+正在卸载 libndp0:amd64 (1.6-1) ...
+正在卸载 libteamdctl0:amd64 (1.27-1) ...
+正在处理用于 gconf2 (3.2.6-4.1ubuntu2) 的触发器 ...
+正在处理用于 mime-support (3.60ubuntu1) 的触发器 ...
+正在处理用于 desktop-file-utils (0.23-3ubuntu3) 的触发器 ...
+正在处理用于 libglib2.0-0:amd64 (2.58.1-2) 的触发器 ...
+No such key “Gtk/IMModule” in schema “org.gnome.settings-daemon.plugins.xsettings” as specified in override file “/usr/share/glib-2.0/schemas/50_sogoupinyin.gschema.override”；忽略对此键的覆盖。
+正在处理用于 libc-bin (2.28-0ubuntu1) 的触发器 ...
+正在处理用于 man-db (2.8.4-2) 的触发器 ...
+正在处理用于 gnome-menus (3.13.3-11ubuntu2) 的触发器 ...
+正在处理用于 dbus (1.12.10-1ubuntu2) 的触发器 ...
+正在处理用于 hicolor-icon-theme (0.17-2) 的触发器 ...
+****** 结果：
+
+***  rfkill list
+0: hci0: Bluetooth
+	Soft blocked: no
+	Hard blocked: no
+
+*** DONE 方案二： 重启网卡 ifconfig wlp7s0 up
+CLOSED: [2019-01-31 四 10:32]
+:LOGBOOK:  
+- State "DONE"       from ""           [2019-01-31 四 10:32]
+:END:      
+wlp7s0: 获取接口标志时出错: 没有那个设备
+*** sudo dhclient -v wlp7s0
+Internet Systems Consortium DHCP Client 4.3.5
+Copyright 2004-2016 Internet Systems Consortium.
+All rights reserved.
+For info, please visit https://www.isc.org/software/dhcp/
+
+RTNETLINK answers: Input/output error
+Listening on LPF/wlp7s0/b4:6d:83:86:8c:38
+Sending on   LPF/wlp7s0/b4:6d:83:86:8c:38
+Sending on   Socket/fallback
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 3 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+receive_packet failed on wlp7s0: Network is down
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 6 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 13 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 9 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 14 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 10 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 21 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 17 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 16 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 9 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+DHCPDISCOVER on wlp7s0 to 255.255.255.255 port 67 interval 18 (xid=0xc3debe4e)
+send_packet: Network is down
+dhclient.c:2438: Failed to send 300 byte long packet over wlp7s0 interface.
+*** DONE remove wicd and install networkmanager
+CLOSED: [2019-01-31 四 10:44]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 10:44]
+:END:      
+ network-manager 依赖于 libndp0 (>= 1.2)；然而：
+**** DONE 未安装软件包 libndp0。
+CLOSED: [2019-01-31 四 10:38]
+:LOGBOOK:  
+- State "DONE"       from ""           [2019-01-31 四 10:38]
+:END:      
+ network-manager 依赖于 libteamdctl0 (>= 1.9)；然而：
+**** DONE 未安装软件包 libteamdctl0。d
+CLOSED: [2019-01-31 四 10:41]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 10:41]
+:END:      
+**** log
+sudo dpkg -i network-manager_1.10.6-2ubuntu1.1_amd64.deb
+(正在读取数据库 ... 系统当前共安装有 240236 个文件和目录。)
+正准备解包 network-manager_1.10.6-2ubuntu1.1_amd64.deb  ...
+正在将 network-manager (1.10.6-2ubuntu1.1) 解包到 (1.10.6-2ubuntu1.1) 上 ...
+dpkg: 依赖关系问题使得 network-manager 的配置工作不能继续：
+ network-manager 依赖于 libndp0 (>= 1.2)；然而：
+  未安装软件包 libndp0。
+ network-manager 依赖于 libteamdctl0 (>= 1.9)；然而：
+  未安装软件包 libteamdctl0。
+
+dpkg: 处理软件包 network-manager (--install)时出错：
+ 依赖关系问题 - 仍未被配置
+正在处理用于 dbus (1.12.10-1ubuntu2) 的触发器 ...
+正在处理用于 systemd (239-7ubuntu10.6) 的触发器 ...
+正在处理用于 man-db (2.8.4-2) 的触发器 ...
+在处理时有错误发生：
+ network-manager
+work@work75:~/下载$ sudo dpkg -i libndp0_1.6-1_amd64.deb
+正在选中未选择的软件包 libndp0:amd64。
+(正在读取数据库 ... 系统当前共安装有 240236 个文件和目录。)
+正准备解包 libndp0_1.6-1_amd64.deb  ...
+正在解包 libndp0:amd64 (1.6-1) ...
+正在设置 libndp0:amd64 (1.6-1) ...
+正在处理用于 libc-bin (2.28-0ubuntu1) 的触发器 ...
+work@work75:~/下载$ sudo dpkg -i libteamdctl0_1.26-1_amd64.zip
+dpkg-deb: 错误: 'libteamdctl0_1.26-1_amd64.zip' is not a Debian format archive
+dpkg: 处理归档 libteamdctl0_1.26-1_amd64.zip (--install)时出错：
+ dpkg-deb --control subprocess returned error exit status 2
+在处理时有错误发生：
+ libteamdctl0_1.26-1_amd64.zip
+work@work75:~/下载$ sudo dpkg -i libteamdctl0_1.26-1_amd64.deb
+正在选中未选择的软件包 libteamdctl0:amd64。
+(正在读取数据库 ... 系统当前共安装有 240241 个文件和目录。)
+正准备解包 libteamdctl0_1.26-1_amd64.deb  ...
+正在解包 libteamdctl0:amd64 (1.26-1) ...
+正在设置 libteamdctl0:amd64 (1.26-1) ...
+正在处理用于 libc-bin (2.28-0ubuntu1) 的触发器 ...
+work@work75:~/下载$ sudo dpkg -i network-manager_1.10.6-2ubuntu1.1_amd64.deb
+(正在读取数据库 ... 系统当前共安装有 240246 个文件和目录。)
+正准备解包 network-manager_1.10.6-2ubuntu1.1_amd64.deb  ...
+正在将 network-manager (1.10.6-2ubuntu1.1) 解包到 (1.10.6-2ubuntu1.1) 上 ...
+正在设置 network-manager (1.10.6-2ubuntu1.1) ...
+Created symlink /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service → /lib/systemd/system/NetworkManager-dispatcher.service.
+Created symlink /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service → /lib/systemd/system/NetworkManager-wait-online.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/NetworkManager.service → /lib/systemd/system/NetworkManager.service.
+正在处理用于 dbus (1.12.10-1ubuntu2) 的触发器 ...
+正在处理用于 systemd (239-7ubuntu10.6) 的触发器 ...
+正在处理用于 man-db (2.8.4-2) 的触发器 ...
+work@work75:~/下载$ sudo apt-get autoremove wicd
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成
+下列软件包将被【卸载】：
+  wicd
+升级了 0 个软件包，新安装了 0 个软件包，要卸载 1 个软件包，有 8 个软件包未被升级。
+解压缩后将会空出 27.6 kB 的空间。
+您希望继续执行吗？ [Y/n] 
+(正在读取数据库 ... 系统当前共安装有 240245 个文件和目录。)
+正在卸载 wicd (1.7.4+tb2-5) ...
+work@work75:~/下载$ sudo apt-get autoremove --purge wicd
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成
+软件包 wicd 未安装，所以不会被卸载
+升级了 0 个软件包，新安装了 0 个软件包，要卸载 0 个软件包，有 8 个软件包未被升级。
+work@work75:~/下载$ 
+***** uninstall
+
+work@work75:~/下载$ sudo apt-get autremove --purge wicd*
+E: 不能理解命令行选项 “--purge” 与其他选项的搭配
+work@work75:~/下载$ sudo apt-get autremove  wicd*
+E: 无效的操作 autremove
+work@work75:~/下载$ sudo apt-get autoremove --purge wicd*
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成
+注意，根据Glob 'wicd*' 选中了 'wicd-gtk'
+注意，根据Glob 'wicd*' 选中了 'wicd-client'
+注意，根据Glob 'wicd*' 选中了 'wicd-curses'
+注意，根据Glob 'wicd*' 选中了 'wicd'
+注意，根据Glob 'wicd*' 选中了 'wicd-cli'
+注意，根据Glob 'wicd*' 选中了 'wicd-daemon'
+软件包 wicd 未安装，所以不会被卸载
+软件包 wicd-cli 未安装，所以不会被卸载
+软件包 wicd-curses 未安装，所以不会被卸载
+下列软件包将被【卸载】：
+  wicd-daemon* wicd-gtk*
+升级了 0 个软件包，新安装了 0 个软件包，要卸载 2 个软件包，有 6 个软件包未被升级。
+解压缩后将会空出 1,548 kB 的空间。
+您希望继续执行吗？ [Y/n] 
+(正在读取数据库 ... 系统当前共安装有 240238 个文件和目录。)
+正在卸载 wicd-gtk (1.7.4+tb2-5) ...
+正在卸载 wicd-daemon (1.7.4+tb2-5) ...
+debconf: 无法初始化前端界面：Dialog
+debconf: (对话框界面将不能在哑终端上运行，例如 Emacs shell 缓存，或者没有控制终端。)
+debconf: 返回前端界面：Readline
+正在处理用于 mime-support (3.60ubuntu1) 的触发器 ...
+正在处理用于 desktop-file-utils (0.23-3ubuntu3) 的触发器 ...
+正在处理用于 man-db (2.8.4-2) 的触发器 ...
+正在处理用于 gnome-menus (3.13.3-11ubuntu2) 的触发器 ...
+正在处理用于 hicolor-icon-theme (0.17-2) 的触发器 ...
+(正在读取数据库 ... 系统当前共安装有 240052 个文件和目录。)
+正在清除 wicd-daemon (1.7.4+tb2-5) 的配置文件 ...
+debconf: 无法初始化前端界面：Dialog
+debconf: (对话框界面将不能在哑终端上运行，例如 Emacs shell 缓存，或者没有控制终端。)
+debconf: 返回前端界面：Readline
+正在清除 wicd-gtk (1.7.4+tb2-5) 的配置文件 ...
+正在处理用于 systemd (239-7ubuntu10.6) 的触发器 ...
+正在处理用于 dbus (1.12.10-1ubuntu2) 的触发器 ...
+
+**** result
+can ethernet through usb with phone
+can open baidu.com   
+
+*** start from dont have network controller
+*** ubuntu的网络适配器
+*** find wireless:  Bus 003 Device 003: ID 8087:07dc Intel Corp. 
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          224 Wireless
+  bDeviceSubClass         1 Radio Frequency
+  bDeviceProtocol         1 Bluetooth
+  bMaxPacketSize0        64
+  idVendor           0x8087 Intel Corp.
+  idProduct          0x07dc 
+  bcdDevice            0.01
+  iManufacturer           0 
+  iProduct                0 
+  iSerial                 0 
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength          177
+    bNumInterfaces          2
+    bConfigurationValue     1
+    iConfiguration          0 
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           3
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x82  EP 2 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0000  1x 0 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0000  1x 0 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       1
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0009  1x 9 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0009  1x 9 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       2
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0011  1x 17 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0011  1x 17 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       3
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0019  1x 25 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0019  1x 25 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       4
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0021  1x 33 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0021  1x 33 bytes
+        bInterval               1
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       5
+      bNumEndpoints           2
+      bInterfaceClass       224 Wireless
+      bInterfaceSubClass      1 Radio Frequency
+      bInterfaceProtocol      1 Bluetooth
+      iInterface              0 
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x03  EP 3 OUT
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0031  1x 49 bytes
+        bInterval               1
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            1
+          Transfer Type            Isochronous
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0031  1x 49 bytes
+        bInterval               1
+Device Status:     0x0001
+  Self Powered
+*** install  broadcom-sta-dkms                                                :useless:
+sudo apt-get install broadcom-sta-dkms
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+下列【新】软件包将被安装：
+  broadcom-sta-dkms
+升级了 0 个软件包，新安装了 1 个软件包，要卸载 0 个软件包，有 54 个软件包未被升级。
+需要下载 0 B/2,203 kB 的归档。
+解压缩后会消耗 14.5 MB 的额外空间。
+正在选中未选择的软件包 broadcom-sta-dkms。
+(正在读取数据库 ... 系统当前共安装有 240024 个文件和目录。)
+正准备解包 .../broadcom-sta-dkms_6.30.223.271-9_all.deb  ...
+正在解包 broadcom-sta-dkms (6.30.223.271-9) ...
+正在设置 broadcom-sta-dkms (6.30.223.271-9) ...
+Loading new broadcom-sta-6.30.223.271 DKMS files...
+Building for 4.18.0-13-generic
+Building initial module for 4.18.0-13-generic
+Secure Boot not enabled on this system.
+Done.
+
+wl:
+Running module version sanity check.
+ - Original module
+   - No original module exists within this kernel
+ - Installation
+   - Installing to /lib/modules/4.18.0-13-generic/updates/dkms/
+
+depmod...
+
+Backing up initrd.img-4.18.0-13-generic to /boot/initrd.img-4.18.0-13-generic.old-dkms
+Making new initrd.img-4.18.0-13-generic
+(If next boot fails, revert to initrd.img-4.18.0-13-generic.old-dkms image)
+update-initramfs.......
+
+DKMS: install completed.
+*** DONE install sudo apt-get install --reinstall  bcmwl-kernel-source   没变化
+CLOSED: [2019-01-31 四 15:37]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 15:37]
+:END:      
+*** DONE 一篇文章[[https://blog.csdn.net/github_33678609/article/details/86502916][csdn]]                                                         :useless:
+CLOSED: [2019-01-31 四 15:54]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 15:54]
+:END:      
+*** DONE 注释掉/etc/modprobe.d/blacklist-bcm43.conf文件最后两行，也就是：     :useless:
+CLOSED: [2019-01-31 四 16:03]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-01-31 四 16:03]
+:END:      
+blacklist bcma
+blacklist brcmsmac
+do something for my pc with usbwireless
+*** DONE start from engine[5/5]
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-05-26 日 16:14]
+:END:      
+从引擎下进行搜索后判断
+**** DONE ubuntu18.04没有网卡驱动
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-05-26 日 16:14]
+:END:      
+***** blog1
+****** sudo dpkg -i bcmwl-kernel-source_6.30.223.271+bdcom-0ubuntu4_amd64.deb
+******* log
+ │ Your system has UEFI Secure Boot enabled.                                                                                                                                                             │ 
+ │                                                                                                                                                                                                       │ 
+ │ UEFI Secure Boot requires additional configuration to work with third-party drivers.                                                                                                                  │ 
+ │                                                                                                                                                                                                       │ 
+ │ The system will assist you in configuring UEFI Secure Boot. To permit the use of third-party drivers, a new Machine-Owner Key (MOK) has been generated. This key now needs to be enrolled in your     │ 
+ │ system's firmware.                                                                                                                                                                                    │ 
+ │                                                                                                                                                                                                       │ 
+ │ To ensure that this change is being made by you as an authorized user, and not by an attacker, you must choose a password now and then confirm the change after reboot using the same password, in    │ 
+ │ both the "Enroll MOK" and "Change Secure Boot state" menus that will be presented to you when this system reboots.                                                                                    │ 
+ │                                                                                                                                                                                                       │ 
+ │ If you proceed but do not confirm the password upon reboot, Ubuntu will still be able to boot on your system but any hardware that requires third-party drivers to work correctly may not be usable. 
+******** password:helloworld
+******** else
+(正在读取数据库 ... 系统当前共安装有 240088 个文件和目录。)
+正准备解包 bcmwl-kernel-source_6.30.223.271+bdcom-0ubuntu4_amd64.deb  ...
+Removing all DKMS Modules
+Done.
+正在将 bcmwl-kernel-source (6.30.223.271+bdcom-0ubuntu4) 解包到 (6.30.223.271+bdcom-0ubuntu4) 上 ...
+正在设置 bcmwl-kernel-source (6.30.223.271+bdcom-0ubuntu4) ...
+Loading new bcmwl-6.30.223.271+bdcom DKMS files...
+Building for 4.18.0-13-generic
+Building for architecture x86_64
+Building initial module for 4.18.0-13-generic
+Done.
+
+wl:
+Running module version sanity check.
+ - Original module
+   - No original module exists within this kernel
+ - Installation
+   - Installing to /lib/modules/4.18.0-13-generic/updates/dkms/
+
+depmod...
+
+DKMS: install completed.
+Adding '/var/lib/shim-signed/mok/MOK.der' to shim:
+modprobe: ERROR: could not insert 'wl': Operation not permitted
+update-initramfs: deferring update (trigger activated)
+正在处理用于 initramfs-tools (0.131ubuntu15) 的触发器 ...
+update-initramfs: Generating /boot/initrd.img-4.18.0-13-generic
+I: The initramfs will attempt to resume from /dev/dm-1
+I: (/dev/mapper/ubuntu--vg-swap_1)
+I: Set the RESUME variable to override this.
+
+**** ubuntu18.04 更新后 wifi无法连接
+**** DONE ubuntu18.04 没有wifi适配器
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "NEXT"       [2019-05-26 日 16:14]
+:END:      
+**** DONE ubuntu18.04 lspci 无法识别无线网卡
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-05-26 日 16:14]
+:END:      
+**** DONE ubuntu18.04  无法识别无线网卡
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-05-26 日 16:14]
+:END:      
+**** DONE lspci
+CLOSED: [2019-05-26 日 16:14]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-05-26 日 16:14]
+:END:      
+
+
+*** change the version for gcc
+已经解决了！我去看了一下/var/lib/dkms/broadcom-sta/6.30.223.271/build/make.log之后发现是我gcc版本太旧了，之前搭建深度学习环境时候把gcc版本降到4.8。
+
+现在换回gcc8之后，装broadcom-sta-dkms和bcmwl-kernel-source都能用。
+*** DONE 无线开关打开了吗 
+CLOSED: [2019-02-01 五 10:54]
+:LOGBOOK:  
+- State "DONE"       from "TODO"       [2019-02-01 五 10:54]
+:END:      
+think is open
+
+
+*** 驱动未加载
+*** 加载未识别。
+*** 猜测：
+没有驱动
+驱动未加载
+加载未识别。
+** [[https://blog.csdn.net/tge7618291/article/details/7466236][判断网卡驱动是否加载然后安装]]
+
+** iwlist 常用wifi配置工具
+*** iwlist wifi-name scanning  扫描可用的无线网络
+iwlist wlan0 scanning  wlan0 为无线网卡的名字  可使用ifconfig查看。。
+** lshw
+** 关于无线网卡
+*** 无线网卡有3种。
+PCI接口的网卡，不用考虑耗电量，PCB尺寸也最大，散热不存在问题，故稳定性最好。
+PCMCIA接口的网卡，因为要考虑耗电量，PCB尺寸也较大，发热量也较大，稳定性次于PCI网卡。
+USB接口的网卡，因PCB尺寸很小，发热量最大，常常会因为发热量大导致无法上网，国货中TP-Link和腾达的产品常有此问题。
+*** 购买指南
+一、通用性
+USB可以通杀台式机和笔记本，无疑USB最好用，而且当信号不够强的时候，可以通过USB延长线把网卡放置在窗户或门边。二、稳定性
+PCI接口的网卡，不用考虑耗电量，PCB尺寸也最大，散热不存在问题，故稳定性最好。
+PCMCIA接口的网卡，因为要考虑耗电量，PCB尺寸也较大，发热量也较大，稳定性次于PCI网卡。
+USB接口的网卡，因PCB尺寸很小，发热量最大，常常会因为发热量大导致无法上网，国货中TP-Link和腾达的产品常有此问题。三、信号强度
+PCI网卡因有外置天线，信号最强；PCMCIA次之（当USB网卡没有信号时，我就用上PCMCIA网卡）；USB网卡信号最差。四、价格
+USB网卡因为空间小，使用晶体天线，所以价格最高；PCMCIA网卡和PCI网卡价格就差不多了。选择网卡时，通常考虑这些因素：电脑类型，网卡的位置，信号情况，价格。下面我们按电脑类型来分：
+1）台式机：
+-如果离路由较近，不存在信号问题的话，推荐选择用PCI接口的。原因很简单，稳定压倒一切。
+-如果信号较差，首选USB接口网卡+USB延长线。其次考虑使用可外接天线的PCI网卡+外购的天线。2）笔记本：
+-如果离路由较近，不存在信号问题的话，推荐选择用PCMCIA接口的。
+-如果信号较差，选用USB接口网卡+USB延长线。 
+** log 2 按照一个博客升级了内核版本和驱动 结果就好了
+* 简单的硬件识别和管理
+** rfkill 内核管理工具 for Bluetooth and wifi. 
+rfkill 是 一个内核级别的管理工具，可以打开和关闭设备的蓝牙和wifi
+
+*** 列出设备： rfkill list
+rfkill list
+0: hci0: Bluetooth
+	Soft blocked: no
+	Hard blocked: no
+1: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+work@work75:~/note/ubuntu$ 
+*** 关闭设备  rfkill block 0
+0  是编号
+*** 打开设备  rfkill unblock 0
+** lspci
+*** 00:00.0 Host bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor DRAM Controller (rev 06)
+*** 00:01.0 PCI bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor PCI Express x16 Controller (rev 06)
+*** 00:01.1 PCI bridge: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor PCI Express x8 Controller (rev 06)
+*** 00:02.0 VGA compatible controller: Intel Corporation 4th Gen Core Processor Integrated Graphics Controller (rev 06)
+*** 00:03.0 Audio device: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor HD Audio Controller (rev 06)
+*** 00:04.0 Signal processing controller: Intel Corporation Device 0c03 (rev 06)
+*** 00:14.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB xHCI (rev 05)
+*** 00:16.0 Communication controller: Intel Corporation 8 Series/C220 Series Chipset Family MEI Controller #1 (rev 04)
+*** 00:1a.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB EHCI #2 (rev 05)
+*** 00:1b.0 Audio device: Intel Corporation 8 Series/C220 Series Chipset High Definition Audio Controller (rev 05)
+*** 00:1c.0 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #1 (rev d5)
+*** 00:1c.2 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #3 (rev d5)
+*** 00:1c.4 PCI bridge: Intel Corporation 8 Series/C220 Series Chipset Family PCI Express Root Port #5 (rev d5)
+*** 00:1d.0 USB controller: Intel Corporation 8 Series/C220 Series Chipset Family USB EHCI #1 (rev 05)
+*** 00:1f.0 ISA bridge: Intel Corporation HM87 Express LPC Controller (rev 05)
+*** 00:1f.2 SATA controller: Intel Corporation 8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode] (rev 05)
+*** 00:1f.3 SMBus: Intel Corporation 8 Series/C220 Series Chipset Family SMBus Controller (rev 05)
+*** 00:1f.6 Signal processing controller: Intel Corporation 8 Series Chipset Family Thermal Management Controller (rev 05)
+*** 02:00.0 3D controller: NVIDIA Corporation GM107M [GeForce GTX 960M] (rev a2)
+*** 06:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 10)
+以太网 即有线部分
+*** internet controller
+无线网部分
+*** 08:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS522A PCI Express Card Reader (rev 01)
+** 使用什么命令查看网卡
+pcie无线网卡才是用lspci查看，
+usb应该用 lsusb看下设备有没有识别到。
+** 注意
+其他设备应该也存在由于设备类型选择查看命令，类似的问题 例如：lspci和lsusb
+* ppa
+:The repository 'http://ppa.launchpad.net/nathan-renniewaldock/flux/ubuntu cosmic Release' does not have a Release file.
+* grep
+grep 需要查找的字符  文件
+* DONE ubuntu 命令集锦
+CLOSED: [2019-05-26 日 17:10] SCHEDULED: <2019-05-14 二>
+:LOGBOOK:  
+- State "DONE"       from "NEXT"       [2019-05-26 日 17:10]
+:END:      
+你总是能找到你用了会事半功倍的命令，但是你要学会依赖他（发掘用处并努力将自己的思维匹配到什么，然后使用）
+详细内容请见pdf，其实看man也行
+
+** 功能说明大全：
+
+*** 系统
+功能说明：新增用户帐号。
+
+功能说明：改变 finger指令显示的信息。
+
+功能说明：更换登入系统时使用的 shell。
+功能说明：显示或设置系统时间与日期。
+功能说明：退出目前的 shell。
+功能说明：查找并显示用户信息。
+功能说明：显示内存状态。
+功能说明：查找并显示用户信息。
+补充说明：本指令的功能有点类似 finger指令，它会去查找并显示指定帐号的用
+功能说明：报告程序状况。
+功能说明：删除群组。
+功能说明：更改群组识别码或名称。
+功能说明：关闭系统。
+功能说明：显示用户的 ID，以及所属群组的 ID。
+功能说明：删除执行中的程序或工作。
+功能说明：列出目前与过去登入系统的用户相关信息。
+功能说明：列出登入系统失败的用户相关信息。
+功能说明：登入系统。
+补充说明： login指令让用户登入系统，您亦可通过它的功能随时更换登入身份。
+功能说明：显示用户名称。
+
+
+功能说明：退出系统。
+补充说明：logout指令让用户退出系统，其功能和 login指令相互对应。
+功能说明：管理记录文件。
+功能说明：登入另一个群组。
+功能说明：设置优先权。
+功能说明：显鞠低匙刺 ?BR>
+功能说明：报告程序状况。
+功能说明：以树状图显示程序。
+功能说明：重新开机。
+-f  强制重新开机，不调用 shutdown指令的功能。
+功能说明：调整优先权。
+功能说明：远端登入。
+功能说明：远端登入的 Shell。
+-d  使用 Socket层级的排错功能。
+功能说明：查看系统用户。
+户。主机必须提供 rwhod常驻服务的功能，方可使用 rwho指令。
+功能说明：多重视窗管理程序。
+功能说明：系统关机指令。
+功能说明：将 SLIP接口加入标准输入。
+功能说明：变更用户身份。
+功能说明：以其他身份来执行指令。
+功能说明：暂停执行 shell。
+功能说明：系统监控程序。
+功能说明：显示系统负载状况。
+功能说明：显示，管理执行中的程序。
+功能说明：显示系统信息。
+功能说明：建立用户帐号。
+功能说明：用户帐号设置程序。
+功能说明：删除用户帐号。
+功能说明：修改用户帐号。
+功能说明：锁住虚拟终端。
+切换终端机的功能一并关闭。
+功能说明：显示目前登入系统的用户信息。
+功能说明：显示目前登入系统的用户信息。
+功能说明：先似乎用户名称。
+功能说明：查找并显示用户信息。
+功能说明：设置指令的别名。
+功能说明：进阶电源管理服务程序。
+则关闭此功能。
+10，若设置为 0，则关闭此功能。
+功能说明：设置音效装置。
+功能说明：显示或设置键盘按键与其相关的功能。
+语  法：bind [-dlv][-f <按键配置文件>][-m <按键配置>][-q <功能>]
+补充说明：您可以利用 bind命令了解有哪些按键组合与其功能，也可以自行指
+-l  列出所有的功能。
+-q<功能>  显示指定功能的按键。
+-v  列出目前的按键配置与其功能。
+功能说明：检查，设置系统的各种服务。
+功能说明：改变根目录。
+功能说明：调整 RTC 时间。
+功能说明：设置计时器。
+补充说明：cron是一个常驻服务，它提供计时器的功能，让用户在特定的时间得
+器的功能。其配置文件格式如下：
+功能说明：声明 shell 变量。
+功能说明：分析可载入模块的相依性。
+功能说明：设置 ls 指令在显示目录或文件时所用的色彩。
+功能说明：显示开机信息。
+功能说明：启动或关闭 shell 内建指令。
+功能说明：重新运算求出参数的内容。
+功能说明：设置或显示环境变量。
+功能说明：设置景框缓冲区。
+功能说明：开启群组的投影密码。
+许系统管理者读取，同时把原密码置换为"x"字符。投影密码的功能可随时开启
+功能说明：关闭群组的投影密码。
+功能说明：显示与设定硬件时钟。
+功能说明：载入模块。
+补充说明：Linux有许多功能是通过模块的方式，在需要时才载入 kernel。如此
+功能说明：设置键盘类型。
+功能说明：安装核心载入，开机管理程序。
+补充说明：lilo是个 Linux系统核心载入程序，同时具备管理开机的功能。单独
+功能说明：设置核心载入，开机管理程序。
+功能说明：显示已载入系统的模块。
+核心具有模块化的特性，应此在编译核心时，务须把全部的功能都放入核心。您
+可以将这些功能编译成一个个单独的模块，待需要时再分别载入。
+功能说明：显示 MS-DOS文件系统的各项参数。
+功能说明：建立安装的组态文件。
+功能说明：显示 kernel模块的信息。
+功能说明：自动处理可载入模块。
+功能说明：设置鼠标相关参数。
+功能说明：设置系统的各种服务。
+功能说明：设置密码。
+功能说明：开启用户的投影密码。
+功能说明：关闭用户的投影密码。
+功能说明：显示其他主机的日期与时间。
+功能说明：设置终端机视窗的大小。
+功能说明：删除模块。
+模块化的特性，应此在编译核心时，务须把全部的功能都放如核心。你可以将这
+些功能编译成一个个单独的模块，待有需要时再分别载入它们。
+功能说明：管理套件。
+whatprovides<功能特性>][--whatrequires<功能特性>]
+序，由于它遵循 GPL规则且功能强大方便，因而广受欢迎。逐渐受到其他发行
+--whatprovides<功能特性>  查询该套件对指定的功能特性所提供的兼容度。
+--whatrequires<功能特性>  查询该套件对指定的功能特性所需要的兼容度。
+功能说明：设置 shell。
+功能说明：设置系统终端。
+功能说明：查询或显示环境变量。
+功能说明：设置公用程序。
+功能说明：设置声卡。
+功能说明：加强文字模式的显示画面。
+功能说明：设置时区。
+功能说明：控制 shell程序的资源。
+功能说明：删除别名。
+功能说明：删除变量或函数。
+功能说明：过滤控制字符。
+功能说明：滤掉指定的行。
+
+*** 文件
+功能说明：比较两个已排过序的文件。
+功能说明：分割文件。
+功能说明：文本编辑器。
+补充说明：ed是 Linux中功能最简单的文本编辑程序，一次仅能编辑一行而非全
+-G或--traditional   提供回兼容的功能。
+-s,-,--quiet或--silent   不执行开启文件时的检查功能。
+功能说明：在文件内查找指定的字符串。egrep执行效果如 grep -E，使用的语法
+功能说明：在 Ex模式下启动 vim文本编辑器。ex执行效果如同 vi -E，使用语法
+功能说明：查找文件里符合条件的字符串。
+功能说明：编排文本文件。
+功能说明：限制文件列宽。
+功能说明：查找文件里符合条件的字符串。
+功能说明：拼字检查程序。
+功能说明：编辑文本文件。
+功能说明：编辑文本文件。
+补充说明：Joe是一个功能强大的全屏幕文本编辑程序。操作的复杂度要比 Pico
+高一点，但是功能较为齐全。Joe一次可开启多个文件，每个文件各放在一个编
+-noxon   尝试取消“Ctrl+s”与“Ctrl+q”键的功能。
+功能说明：将两个文件中，指定栏位内容相同的行连接起来。
+功能说明：查询单字。
+功能说明：显示 MS-DOS文件的内容。
+功能说明：编辑文字文件。
+-b   开启置换的功能。
+-d   开启删除的功能。
+-f   支持键盘上的 F1、F2...等功能键。
+-j   开启切换的功能。
+-m   开启鼠标支持的功能，您可用鼠标点选命令列表。
+功能说明：递归查找文件里符合条件的字符串。
+补充说明：rgrep指令的功能和 grep指令类似，可查找内容包含指定的范本样式
+功能说明：利用 script来处理文本文件。
+功能说明：将文本文件内容加以排序。
+功能说明：拼字检查程序。
+功能说明：转换字符。
+功能说明：检查及删除文本文件中重复出现的行列。
+功能说明：计算字数。
+功能说明：建立或修改备存文件，或是从备存文件中抽取文件。
+功能说明：.bz2文件的解压缩程序。
+功能说明：.bz2文件的压缩程序。
+功能说明：用来修复损坏的.bz2文件。
+功能说明：压缩或解压文件。
+功能说明：备份文件。
+功能说明：备份文件系统。
+功能说明：解压文件。
+功能说明：压缩执行文件。
+功能说明：压缩文件。
+功能说明：压缩或解压缩文件。
+功能说明： 还原(Restore) 由倾倒(Dump)操作所备份下来的文件或整个文件系统( 一个分
+功能说明：备份文件。
+功能说明：解压缩.arj文件。
+功能说明：解压缩 zip 文件
+功能说明：压缩文件。
+功能说明：列出压缩文件信息。
+功能说明：比较文件的差异。
+功能说明：根据 diff的比较结果，显示统计数字。
+功能说明：辨识文件类型。
+功能说明：查找文件或目录。
+功能说明：文字模式下的文件管理员。
+功能说明：Hex/ASCII的看文件程序。
+功能说明：连接文件或目录。
+功能说明：查找文件。
+功能说明：显示文件属性。
+功能说明：变更或显示 MS-DOS文件的属性。
+功能说明：提供一个菜单式的文件管理程序。
+功能说明：复制 MS-DOS文件。
+功能说明：删除 MS-DOS文件。
+功能说明：显示 MS-DOS目录。
+功能说明：建立暂存文件。
+功能说明：在 MS-DOS文件系统中，移动文件或目录，或更改名称。
+功能说明：将 MS-DOS文件复制到 Linux/Unix的目录中。
+功能说明：更改 MS-DOS文件或目录的名称，或是移动文件或目录。
+功能说明：显示 MS-DOS文件在 FAT中的记录。
+功能说明：显示 mtools支持的指令。
+功能说明：测试并显示 mtools的相关设置。
+功能说明：移动或更名现有的文件或目录。
+功能说明：输出文件内容。
+功能说明：合并文件的列。
+功能说明：修补文件。
+功能说明：远端复制文件或目录。
+功能说明：产生与还原加密文件。
+功能说明：删除文件或目录。
+功能说明：查找文件或目录。
+功能说明：切割文件。
+功能说明：读取标准输入的数据，并将其内容输出成文件。
+功能说明：删除暂存文件。
+功能说明：改变文件或目录时间。
+功能说明：指定在建立文件时预设的权限掩码。
+功能说明：查找文件。
+功能说明：查找文件。
+功能说明：改变文件属性。
+功能说明：变更文件或目录的所属群组。
+功能说明：变更文件或目录的权限。
+s：特殊?b>功能说明：变更文件或目录的权限。
+功能说明：变更文件或目录的拥有者或所属群组。
+功能说明：检查文件的 CRC是否正确。
+功能说明：比较两个文件是否有差异。
+功能说明：复制文件或目录。
+功能说明：调整 C原始代码文件的格式。
+功能说明：中断 FTP连线并结束程序。
+功能说明：设置文件系统相关功能。
+功能说明：显示目前以 FTP登入的用户人数。
+功能说明：在指定的时间关闭 FTP服务器。
+删除后即可再度启动 FTP服务器的功能。
+功能说明：显示目前所有以 FTP登入的用户信息。
+功能说明：传输文件。
+功能说明：传输文件。
+功能说明：UUCP文件传输服务程序。
+功能说明：在 Unix系统之间传送文件。
+协议，主要的功能为传送文件。
+功能说明：处理传送进来的文件。
+功能说明：将文件传送到远端的 UUCP主机。
+功能说明：切换目录。
+功能说明：显示磁盘的相关信息。
+功能说明：显示目录记录。
+功能说明：显示目录或文件的大小。
+功能说明：编辑用户或群组的 quota。
+功能说明：退出抽取式设备。
+-a<开关>或--auto<开关>   控制设备的自动退出功能。
+功能说明：连接目录内容。
+功能说明：列出目录内容。
+
+*** 磁盘
+功能说明：在 MS-DOS文件系统中切换工作目录
+功能说明：删除 MS-DOS目录
+功能说明：显示 MS-DOS目录所占用的磁盘空间。
+功能说明：建立目录
+功能说明：显示或设置 MS-DOS磁盘驱动器的标签名称。
+功能说明：在 MS-DOS文件系统中建立目录。
+功能说明：挂入 MS-DOS文件系统。
+功能说明：删除 MS-DOS文件系统中的目录。
+功能说明：Zip/Jaz磁盘驱动器控制指令。
+功能说明：显示工作目录。
+功能说明：显示磁盘已使用的空间与限制。
+功能说明：检查磁盘的使用空间与限制。
+功能说明：关闭磁盘空间限制。
+功能说明：开启磁盘空间限制。
+功能说明：检查磁盘空间限制的状态。
+功能说明：删除目录。
+功能说明：远端磁带传输协议模块。
+功能说明：显示 inode内容。
+功能说明：以树状图列出目录的内容。
+功能说明：卸除文件系统。
+功能说明：检查磁盘装置中损坏的区块。
+功能说明：磁盘分区。
+功能说明：读取，转换并输出数据。
+功能说明：检查 ext2文件系统的正确性。
+功能说明：ext2文件系统编辑程序。
+功能说明：磁盘分区。
+DOS fdisk的 cfdisk互动式操作界面，因此在使用上较为不便，但功能却丝毫不
+功能说明：检查文件系统并尝试修复错误。
+功能说明：检查文件系统并尝试修复错误。
+功能说明：检查文件系统并尝试修复错误。
+功能说明：设置文件系统相关功能。
+功能说明：显示与设定硬盘的参数。
+-A<0或 1>   启动或关闭读取文件时的快取功能。
+-Z   关闭某些 Seagate硬盘的自动省电功能。
+功能说明：设置循环设备。
+功能说明：检查 MS-DOS文件系统的磁盘是否有损坏的磁区。
+功能说明：对 MS-DOS文件系统的磁盘进行格式化。
+功能说明：建立目前系统的启动盘。
+功能说明：建立 MS-DOS文件系统。
+功能说明：建立 ext2文件系统。
+功能说明：与 mke2fs相同。
+功能说明：建立各种文件系统。
+功能说明：建立 Minix文件系统。
+功能说明：与 mkdosfs相同。
+功能说明：建立要载入 ramdisk的映像文件。
+功能说明：建立 ISO 9660映像文件。
+功能。
+功能说明：设置交换区(swap area)。
+功能说明：建立或删除 MS-DOS的分区。
+功能说明：硬盘恩区工具程序。
+功能说明：关闭系统交换区(swap area)。
+功能说明：启动系统交换区(swap area)。
+功能说明：维护符号连接的工具程序。
+功能说明：将内存缓冲区内的数据写入磁盘。
+
+*** 网络
+功能说明：IP拨号连接。
+-i   启动拨号服务器功能。
+功能说明：设置终端机模式，连线速率和管制线路。
+功能说明：精简版的 getty。
+功能说明：关闭 ppp连线。
+功能说明：Samba服务器程序。
+功能说明：远端登入。
+-x   假设主机有支持数据加密的功能，就使用它。
+功能说明：显示 UUCP记录文件。
+功能说明：显示 UUCP目前的状况。
+功能说明：在远端的 UUCP主机上执行指令。
+功能说明：连接另一个系统主机。
+功能说明：设置 DNS服务器组态。
+功能说明：收发传真。
+功能说明：Apache HTTP服务器程序。
+功能说明：显示或设置网络设备。
+功能说明：设置终端机的写入权限。
+功能说明：调制解调器通信程序。
+-C<取文件>   指定取文件，并在启动时开启取功能。
+功能说明：设置路由器。
+功能说明：设置各项网络功能。
+功能说明：设置网络环境。
+功能说明：显示网络状态。
+-g或--groups   显示多重广播功能群组组员名单。
+功能说明：检测主机。
+端主机的网络功能没有问题，就会回应该信息，因而得知该主机运作正常。
+-d   使用 Socket的 SO_DEBUG功能。
+功能说明：显示 PPP连线状态。
+功能说明：Samba服务器控制。
+功能说明：设置或显示串口的相关信息。
+功能说明：管制网络设备的流量。
+补充说明：自 Linux-2.15开始，便支持流量管制的功能。
+功能说明：Samba服务器程序。
+功能说明：显示串口状态。
+功能说明：与其他用户交谈。
+功能说明：倾倒网络传输数据。
+功能说明：测试 Samba的设置是否正确无误。
+功能说明：显示数据包到主机间的路径。
+-d   使用 Socket层级的排错功能。
+功能说明：显示终端机连接标准输入设备的文件名称。
+功能说明：显示全部的 UUCP远端主机。
+功能说明：传送信息。
+功能说明：传送信息。
+功能说明：与其他用户交谈。
+功能说明：监听网络上 ARP的记录。
+功能说明：可用来控制 Apache HTTP服务器的程序。
+功能说明：可存取 SMB/CIFS服务器的用户端程序。
+功能说明：设置 PPP连线。
+
+*** 应用程序
+功能说明：新闻组文件备存程序。
+-r   archive预设的标准错误输出为/var/errlog。-r参数可取消此功能。
+功能说明：设置 INN新闻组服务器。
+功能说明：E-mail管理程序。
+功能说明：下载新闻组清单。
+功能说明：检查 inn相关配置文件的语法是否正确。
+功能说明：E-mail管理程序。
+么容易使用，但功能尚称完整。
+功能说明：Sendmail设置程序。
+功能说明：显示待寄邮件的清单。
+功能说明：查看信箱中的邮件数。
+功能说明：负责处理非文字 E-mail的程序。
+-P   与-p参数功能类似，但会在信息结束显示"Press RETURN to go on"字符串。
+功能说明：E-mail管理程序。
+功能说明：下载新闻组文章。
+功能说明：收发电子邮件，浏览新闻组。
+功能说明：新闻组阅读程序。
+功能说明：转换配置文件。
+功能说明：启动 X Window。
+功能说明：设置 XFree86。
+功能说明：设置 XFee86。
+功能说明：列出 X Server定义的成分。
+功能说明：列出显示器中的客户端应用程序。
+功能说明：列出 X Server使用的字体。
+** grep 
+示例：grep -o "you" ab.log 

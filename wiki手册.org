@@ -1,0 +1,55 @@
+
+
+* wiki工具
+** 不同wiki如何生成目录
+###3.1.1 wiki目录生成
+
+
+|markdown部分|github部分|浏览器部分|编辑器部分|
+|------------|---------|---------|---------|
+|[锚的使用](http://www.cnblogs.com/rainduck/p/3593870.html)||[Chrome 插件为 Github Readme 和 Wiki 文章加上目录](https://www.v2ex.com/t/137102)|| 
+
+[有待学习](https://www.jianshu.com/p/34c92cbd0aaf/)
+
+** gollum
+### 3.1.2 令gollum支持中文链接
+
+安装gollum-rugged_adapter, 运行gollum时, 加上参数 --adapter 为 rugged
+```
+sudo apt-get -y install cmake
+sudo gem install gollum-rugged_adapter
+
+gollum --port 4567 --adapter rugged 
+```
+# 1. [Contents](https://en.wikipedia.org/wiki/Wiki)
+
+
+
+# 2. 几种wiki部署方法的比较
+
+
+
+# 3. 部署与使用
+
+
+
+##3.1 [[gollum git]] 
+
+
+
+** 3.2 MediaWiki
+
+** 3.3 [amWiki](https://link.zhihu.com/?target=http%3A//amwiki.org/doc/)
+
+
+* # 4. wiki语法教程
+
+
+
+
+
+
+# 5. wiki用途
+
+
+##5.1 个人知识管理

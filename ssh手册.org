@@ -1,0 +1,46 @@
+github进行clone以及推送的时候报错
+```
+ssh: connect to host github.com port 22: Connection timed out
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+## 解决
+
+根据报错提示，应该是ssh连不通。
+
+1. 如果只需要解决git  clone的问题,换个协议就好了.
+```
+git clone https://github.com/***/***.git
+```
+
+2.其他
+进行测试:
+```
+ssh -T git@github.com
+
+```
+确认出现:
+```
+ssh: connect to host github.com port 22: Connection timed out
+```
+在存放公钥私钥(id_rsa和id_rsa.pub)的文件里，新建config文本,(config文本起什么作用?)，内容如下：
+```
+Host github.com
+User YourEmail@163.com
+Hostname ssh.github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/id_rsa
+Port 443
+```
+
+修改User为登录github的账号名称。
+再次执行”ssh -T git@github.com”时，会出现提示如下，回车”yes”即可。 
+![hh](http://img.blog.csdn.net/20160113200605078)
+
+这时验证就可以通过。 
+
+![hh](http://img.blog.csdn.net/20160113200738481)
+

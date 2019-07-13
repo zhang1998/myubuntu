@@ -1,0 +1,5 @@
+** nixnote
+[[https://blog.csdn.net/tjzhaomengyi/article/details/81015166][解决不能登录的问题]] 建议不要从ppa安装，会少包缺图标
+nixnote貌似不被认为是会受限制的设备，因此潜在增加了设备数，
+    手机 > 平板
+    平板 > 电脑

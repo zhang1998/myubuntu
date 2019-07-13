@@ -1,0 +1,7 @@
+** 防火墙
+*** 我的防火墙
+我的防火墙安装了两个
+whereis iptables
+iptables: /sbin/iptables /etc/iptables.rules /usr/share/iptables /usr/share/man/man8/iptables.8.gz
+work@zhang-Inspiron-7557:~$ whereis ufw
+ufw: /usr/sbin/ufw /etc/ufw /lib/ufw /usr/share/ufw /usr/share/man/man8/ufw.8.gz

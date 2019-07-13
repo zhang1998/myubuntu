@@ -1,0 +1,13 @@
+** 脚本的写法
+建立.sh 文件
+内容如下
+
+#!/bin/sh
+#ShowHello.sh
+#To show hello to somebody
+ech
+o  “Enter Your Name:”
+read NAME
+echo  “Hello,$NAME!”
+
+将所有行为都写进文件里，包括获得命令返回值，比较文件等。这样使用达到return以及比较的目的

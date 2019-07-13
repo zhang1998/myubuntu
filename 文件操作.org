@@ -1,0 +1,22 @@
+** 文件操作
+*** 分割
+运行work@work75:~/note/python/englishsplit$ split -b 152048 -d yuan english --verbose
+-rw-r--r-- 1 work work   152048 12月 11 09:41 english83
+-rw-r--r-- 1 work work   152048 12月 11 09:41 english84
+-rw-r--r-- 1 work work   152048 12月 11 09:41 english85
+-rw-r--r-- 1 work work   152048 12月 11 09:41 english86
+-rw-r--r-- 1 work work   152048 12月 11 09:41 english87
+-rw-r--r-- 1 work work    85170 12月 11 09:41 english88
+-rw-r--r-- 1 work work 13465394 12月 11 09:38 yuan
+
+*** 转码
+转码
+
+iconv -f gb18030 -t utf-8  old.txt > new.txt
+
+*** 合并
+
+*** 简单编写
+touch
+<<<<<<< HEAD
+=======

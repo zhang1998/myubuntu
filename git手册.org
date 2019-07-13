@@ -1,0 +1,107 @@
+* 教程
+并使用 GitHub 来进行代码托管,因此先让我们进入到本书最后一次
+的 Git 时间。 
+# 14.2 Git 时间,将代码托管到 GitHub 上
+ 经过前面几章的学习,相信你已经可以非常熟练地使用 Git  了。
+## github简介
+ 本节依然是 Git 时间, 这次我们将会把酷欧天气的代码托管到 GitHub 上面。 GitHub 是全球最大的代码托管网站,主要是借助 Git 来进行版本控制的。任何开源软件 都可以免费地将代码提交到 GitHub 上,以零成本的代价进行代码托管。GitHub 的官网地址 如下: https://github.com/ 官网的首页如图 14.1 所示。
+## 建立账号
+ 
+ 首先你需要有一个 GitHub账号才能使用 GitHub的代码托管功能,点击 Sign up for GitHub 按钮进行注册,然后填入用户名、邮箱和密码. 
+## 创建账户
+图 14.2 点击 Create an account 按钮来创建账户,接下来会让你选择个人计划,收费计划有创建 私人版本库的权限,而我们的酷欧天气是开源软件,所以这里选择免费计划就可以了,如图 14.3 所示。
+接着点击 Finish sign up 按钮完成注册,就会跳转到 GitHub 的个人主界面了,如图 14.4 所示。
+## 创建版本库
+图 14.4 然后我们可以点击右下角的 New repository 按钮来创建一个版本库,这里将版本库命名
+为 coolweather,然后选择添加一个 Android 项目类型的.gitignore 文件,并使用 Apache v2 License 来作为酷欧天气的开源协议,如图 14.5 所示。
+图 14.5 接着点击 Create repository 按钮, coolweather 这个版本库就创建完成了,如图 14.6 所示。 版本库主页地址是 https://github.com/tony-green/coolweather。 501第一行代码 —— Android
+图 14.6 可以看到,GitHub 已经自动帮我们创建了.gitignore、LICENSE 和 README.md 这三个 文件,其中编辑 README.md 文件中的内容可以修改酷欧天气版本库主页的描述。
+## 创建项目
+ 创建好了版本库之后,我们就需要创建酷欧天气这个项目了。在 Eclipse 中新建一个 Android 项目,项目名叫做 CoolWeather,包名叫做 com.coolweather.app,仍然使用的是 4.0
+的 API,
+图 502 14.7第 14 章 进入实战,开发酷欧天气 之后的步骤不用多说,一直点击 Next 就可以完成项目的创建,所有选项都使用默认的 就好。 
+## 远程版本的克隆
+接下来的一步非常重要,我们需要将远程版本库克隆到本地。首先必须知道远程版本库
+的 Git 地址,可以在酷欧天气版本库主页的右下角找到,如图 14.8 所示。
+图 14.8 点击右边的复制按钮可以将版本库的 Git 地址复制到剪贴板,酷欧天气版本库的 Git 地 址是 https://github.com/tony-green/coolweather.git。然后打开 Git Bash 并切换到 CoolWeather 的工程目录下,如图 14.9 所示。
+图 14.9 接着输入 git clone https://github.com/tony-green/coolweather.git 来把远程版本库克隆到本 地,如图 14.10 所示。
+图 14.10 看到图中所给的文字提示就表示克隆成功了,并且.gitignore、 LICENSE 和 README.md 这三个文件也已经被复制到了本地,可以进入到 coolweather 目录,并使用 ls –al 命令查看一 503第一行代码 —— Android 下,如图 14.11 所示。
+## 关联至自己的文件夹
+图 14.11 现在我们需要将这个目录中的所有文件全部复制到上一层目录中,这样就能将整个 CoolWeather 工程目录添加到版本控制中去了。注意.git 是一个隐藏目录,在复制的时候千万 不要漏掉。复制完之后可以把 coolweather 目录删除掉,最终 CoolWeather 工程的目录结构如
+图 14.12 所示。
+## 提交文件
+图 14.12 接下来我们应该把 CoolWeather 项目中现有的文件提交到 GitHub 上面,这就很简单了, 先将所有文件添加到版本控制中,如下所示: git add . 504第 14 章 进入实战,开发酷欧天气 然后在本地执行提交操作: git commit -m "First commit." 最后将提交的内容同步到远程版本库,也就是 GitHub 上面: git push origin master 
+## 确认账户 
+注意,最后一步的时候 GitHub 要求输入用户名和密码来进行身份校验,这里输入我们 注册时填入的用户名和密码就可以了,如图 14.13 所示。
+图 14.13 这样就已经同步完成了,现在刷新一下酷欧天气版本库的主页,你会看到刚才提交的那 些文件已经存在了,如图 14.14 所示。
+
+
+* the progress for new git 
+
+mkdir 
+创建远程仓库
+git init
+git remote add origin git@github.com:zhang1998/仓库名字.git
+修改忽略文件夹,注意忽略idea配置
+git add -A
+git commit -m ""
+git push -u [origin:你的远程仓库名字] master
+
+* TODO 中文支持
+
+* branch
+
+git branch
+git checkout [branch:你的branch名字]
+
+使用时注意保持上游的一致性
+
+* 忽略方法
+/py
+/.idea/
+*.png
+
+** git 
+[[https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000][廖雪峰git教程]]
+[[~/note/ubuntu/git命令.org][知识管理-git]]
+
+* 更换本地ip之后出现connection out
+
+** 方案一 ：重新生成秘钥
+1. rm rd_rssa*
+2. ssh-keygen -t rsa -C "youremail@example.com"
+3. ssh -T git@github.com
+4. ping github.com
+   1. 长时间卡主不显示内容
+   2. 长时间卡主不显示内容
+** 方案二：修改host     success
+因此怀疑是：本地DNS无法解析导致的。
+1. vi  /etc/hosts
+2. ping
+   1. 通了
+3. ssh 长时间连接无反应  类似于卡住了
+4. 把如下内容复制到ssh_config文件的末尾处：并记得保存
+    Host github.com
+    User git
+
+    Hostname ssh.github.com
+
+    PreferredAuthentications publickey
+
+    IdentityFile ~/.ssh/id_rsa
+
+    Port 443 
+5. ssh -T git@github.com
+   1. 报错：
+      The authenticity of host '[ssh.github.com]:443 ([192.30.253.123]:443)' can't be established.RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.Are you sure you want to continue connecting (yes/no
+
+6. git pull origin master
+      authenticity of host '[ssh.github.com]:443 ([192.30.253.123]:443)' can't be established.
+      RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+      Are you sure you want to continue connecting (yes/no)? yes
+      Warning: Permanently added '[ssh.github.com]:443,[192.30.253.123]:443' (RSA) to the list of known hosts.
+       remote: Enumerating objects: 11, done.
+
+*** TODO 问题
+什么是hostname
+

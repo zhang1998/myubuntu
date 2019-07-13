@@ -1,0 +1,4 @@
+** matlab
+*** 安装
+本来在win下安装安不上，下载和安装都有问题
+[[https://blog.csdn.net/fengfeng0328/article/details/82990838][安装教程一]]

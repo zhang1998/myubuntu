@@ -1,0 +1,4 @@
+make真的是十分强大的软件，
+搭配makefile几乎等同于shell了，但是比shell要简单和明了
+* TODO make for python                                                          :tip:
+学习makefile在python中的应用

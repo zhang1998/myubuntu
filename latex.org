@@ -1,0 +1,18 @@
+* 选择latex工具
+
+| emacs+auctex  | emacs+latex | vim | 方案   |
+|---------------+-------------+-----+--------|
+| 1             |             |     | 选择度 |
+| 见emacs笔记内 |             |     | 实现   |
+* 关于latex的简单理解
+article/ctexart 中，定义了五个控制序列来调整行文组织结构。他们分别是
+
+    \section{·}
+
+    \subsection{·}
+
+    \subsubsection{·}
+
+    \paragraph{·}
+
+    \subparagraph{·}

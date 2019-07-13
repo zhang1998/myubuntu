@@ -1,0 +1,97 @@
+* mysql安装
+[[https://blog.csdn.net/qq_36652619/article/details/81535987][添加用户与授权]] ：注意未测试授权部分
+>>>>>>> 2dad5a6982f20879dfdeacfcf14c1c8dac1dcf1a
+* 命令行使用
+|登录：| mysql -u work -p|
+** show 系列
+show   databases tables;
+desc tablename;
+** 创建
+create  database table;
+*** table  的 关系
+
+CREATE TABLE IF NOT EXISTS `runoob_tbl`(
+   `runoob_id` INT UNSIGNED AUTO_INCREMENT,
+   `runoob_title` VARCHAR(100) NOT NULL,
+   `runoob_author` VARCHAR(40) NOT NULL,
+   `submission_date` DATE,
+   PRIMARY KEY ( `runoob_id` )
+   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+|-----------------+------------------+------+-----+---------+----------------|
+| Field           | Type             | Null | Key | Default | Extra          |
+|-----------------+------------------+------+-----+---------+----------------|
+| runoob_id       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| runoob_title    | varchar(100)     | NO   |     | NULL    |                |
+| runoob_author   | varchar(40)      | NO   |     | NULL    |                |
+| submission_date | date             | YES  |     | NULL    |                |
+
+* TODO erro
+SCHEDULED: <2019-01-22 二>
+** 现状
+*** work 直接不能登录
+*** root   不需要密码，直接使用sudo登录
+udo mysql -u root -p
+[sudo] work 的密码：
+对不起，请重试。
+[sudo] work 的密码：
+Enter password:
+
+** TODO work无法登录
+*** 密码问题 修改密码
+**** 测试2
+ INSERT INTO user
+          (host, user, password,
+           select_priv, insert_priv, update_priv)
+           VALUES ('localhost', 'guest',
+           PASSWORD('guest123'), 'Y', 'Y', 'Y');
+Query OK, 1 row affected (0.20 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT host, user, password FROM user WHERE user = 'guest';
++-----------+---------+------------------+
+| host      | user    | password         |
++-----------+---------+------------------+
+| localhost | guest | 6f8c114b58f2ce9e |
++-----------+---------+------------------+
+1 row in set (0.00 sec)
+** DONE 新建用户work2 for intelnovel
+CLOSED: [2019-01-22 二 19:23]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2019-01-22 二 19:23]
+:END:
+*** 测试1
+ 另外一种添加用户的方法为通过SQL的 GRANT 命令，以下命令会给指定数据库TUTORIALS添加用户 zara ，密码为 zara123 。
+
+root@host# mysql -u root -p
+Enter password:*******
+mysql> use mysql;
+Database changed
+
+mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+     ON TUTORIALS.*
+     TO 'zara'@'localhost'
+     IDENTIFIED BY 'zara123';
+**** 结果：创建成功 登录成功
+** TODO work2的库添加和删除
+*** 没有权限问题需要权限：GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+  GRANT ALL PRIVILEGES ON *.* TO 'work2'@'localhost' IDENTIFIED BY 'hello';
+- [X]  创造数据库 CREAT DATABASE name;
+- [ ] 创造表单
+    #+BEGIN_SRC
+CREATE TABLE IF NOT EXISTS `runoob_tbl`(
+   `runoob_id` INT UNSIGNED AUTO_INCREMENT,
+   `runoob_title` VARCHAR(100) NOT NULL,
+   `runoob_author` VARCHAR(40) NOT NULL,
+   `submission_date` DATE,
+   PRIMARY KEY ( `runoob_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+    #+END_SRC
+- [ ]  表单控制
+
+** root在不使用sudo的情况下登录
+
+* 权限问题
+[[https://www.cnblogs.com/SQL888/p/5748824.html][一篇博客]]

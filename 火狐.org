@@ -1,0 +1,4 @@
+* firefox
+浏览器一直崩溃
+[[https://ftp.mozilla.org/pub/firefox/releases/][一个火狐浏览器下载地址]]
+关闭了硬件加速，等待查看效果如何

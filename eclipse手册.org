@@ -1,0 +1,24 @@
+* # 一些错误的处理
+
+```
+Error retrieving parent for item: No resource found that matches the given name 'Theme.AppCompat.Light.DarkActionBar'.
+
+
+ Error retrieving parent for item: No resource found that matches the given name 'Theme.AppCompat.Light'.
+```
+http://blog.sina.com.cn/s/blog_3e28c8a50101g14g.html
+
+
+
+
+    No resource found that matches the given name 'Theme.AppCompat.Light 的完美解决方案  http://www.360doc.com/content/15/0316/15/9200790_455576135.shtml
+    Android关于Theme.AppCompat相关问题的深入分析
+    http://www.jianshu.com/p/6ad7864e005e
+    在Eclipse添加Android兼容包（v4、v7 appcompat）
+    http://www.360doc.com/content/15/0316/15/9200790_455576135.shtm
+
+*  一些使用
+
+* 问题
+1.运行时没有可供选择的设备：select a device with min api level
+修改AndroidManifest.xml中的usesdk,最小sdklevel为10.
