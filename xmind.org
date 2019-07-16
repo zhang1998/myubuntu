@@ -1,0 +1,6 @@
+安装xmind
+下载包
+进入包内运行setup
+之后进入amd包内运行程序即可开始工作
+* 报错：发生了错误，请参阅日志文件/home/
+只需要入[[https://forum.ubuntu.org.cn/viewtopic.php?t%3D487719][该文]] 所示更改xmind依赖的java环境就好了
