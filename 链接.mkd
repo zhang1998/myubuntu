@@ -1,8 +1,0 @@
-插入图片：![alt text](http://path/to/img.jpg "title")
-文字链接：[Title](你的链接地址)
-图片加链接：[![alt text](http://path/to/img.jpg "title")](你的链接地址)
-  在atom上实验发现都可显示图片，但不知是否链接
-  [![alt text](http://img.blog.csdn.net/20161104173526846)]
-  [![alt text](http://img.blog.csdn.net/20161104173526846)
-  ![alt text](http://img.blog.csdn.net/20161104173526846)
-其实就是 图片 和 文字链接 2种语法结合起来用。
