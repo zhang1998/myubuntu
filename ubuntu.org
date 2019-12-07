@@ -37,7 +37,211 @@
             Other []:
 这个信息是否正确? [Y/n] y
 
+* TODO 　Linux环境以Ubuntu 7.10为例，下述三款软件，均包含在Ubuntu源里，可直接apt-get install来安装。
 
+* TODO 浏览器
+
+** chrom
+
+*** TODO chrom的百度翻译插件
+1. [ ] 安装油猴
+2. [ ] 看看文档 还要安装什么
+** TODO 不知道为什么 到了流量链接之后 不能翻译网页了  
+1. [ ] 使用wifi  firefox 的翻译插件还能使用吗
+
+* TODO 密码暴破
+** TODO 　　1、破解Zip文件密码
+
+　　现在网络上最流行的文档格式当属zip，因而先介绍这款破解Zip文件密码的软件，它是名字是fcrackzip， 基于命令行。
+
+　　Fcrackzip具备一般破解软件的主要功能，分穷举破解和词典破解。假如你知道密码的字符个数或字符组成，那么用穷举破解最合适。
+
+　　它还具备测试功能，让你了解本机破解的速度。
+
+　　举例，假如你知道一个Zip文件由6位的小写字母组成，那么只要运行：
+
+　　fcrackzip -c a -p aaaaaa sample.zip
+
+　　则fcrackzip则会穷举从aaaaaa到zzzzzz的所有可能，很快密码就将破解。
+
+　　其他使用方法可参考fcrackzip –help
+
+** TODO 　　2、破解PDF文档
+
+　　为了保护私有的文档，对PDF进行加密也越来越多了。通过另外一款软件：pdfcrack，就能对PDF文档进行破解。它同样是一款命令行下的软件，支持对所有已知的PDF版本进行破解。
+
+　　与fcrackzip类似，pdfcrack具备穷举、词典和基本测试功能。虽然命令行参数不尽相同，但用起来基本类似。
+
+　　最简单的情况下，你不必指定任何参数，直接“pdfcrack 文件名”即可。
+
+** TODO 　　3、破解Windows密码
+
+　　这个虽然跟破解文档密码无关，但是确实是Linux能做到的：破解Windows NT/2000/XP/Vista的密码！
+
+　　通过ophcrack这款基于GTK+的图形软件，破解Windows密码将不是什么难的事情，包括对最新的Vista的破解。
+
+　　更强大的是，使用装载了Ophcrack的LiveCD：Ophcrack LiveCD，你就可以带着光盘，走到哪里，破解到哪里：光盘具备从Windows分区载入加密的SAM的能力，并且不需要安装，用光盘启动即可以开始破解。
+
+　　你可以从Ophcrack了解详细信息，同样在Ubuntu下可以直接安装。
+** TODO rar压缩包的暴力破解
+
+*** 先使用[[http://rarcrack.sourceforge.net/][rarcrack]]
+本电脑，最大线程数32768
+**** 安装教程
+2.安装libxml2-dev包
+sudo apt-get install libxml2-dev
+
+3.编译并安装
+make
+sudo make install
+
+4.测试
+源程序里带的test.rar、test.zip、test.7z压缩包可供测试
+rarcrack test.rar
+
+大概几分钟后提示：GOOD: password cracked:
+**** TODO 报错：
+gcc -pthread rarcrack.c `xml2-config --libs --cflags` -O2 -o rarcrack
+/bin/sh: 1: xml2-config: not found
+In file included from rarcrack.c:21:
+rarcrack.h:25:10: fatal error: libxml/xmlmemory.h: 没有那个文件或目录
+ #include <libxml/xmlmemory.h> //libxml2 headers
+          ^~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:6：all] 错误 1
+
+***** 解决方案一
+xmlmemory.h
+1. [X] 找到源文件
+   1. [X] xmlmemory.h
+2. [-] 链接到目标位置
+   1. [ ] 含.h的位置
+      2. [ ] ./usr/lib/x86_64-linux-gnu/perl/5.26.2/CORE/parser.h
+      3. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/stream/parser.h
+      4. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/efi/signature/list/parser.h
+      5. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/efi/dev/path/parser.h
+      6. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/pkcs7/message/parser.h
+      7. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/bpf/stream/parser.h
+      8. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/x509/certificate/parser.h
+      9. [ ] ./usr/src/linux-headers-4.18.0-12-generic/include/config/blk/cmdline/parser.h
+      10. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/stream/parser.h
+      11. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/efi/signature/list/parser.h
+      12. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/efi/dev/path/parser.h
+      13. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/pkcs7/message/parser.h
+      14. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/bpf/stream/parser.h
+      15. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/x509/certificate/parser.h
+      16. [ ] ./usr/src/linux-headers-4.18.0-13-generic/include/config/blk/cmdline/parser.h
+      17. [ ] ./usr/src/linux-headers-4.18.0-13/include/linux/parser.h
+      18. [ ] ./usr/src/linux-headers-4.18.0-12/include/linux/parser.
+   2. [ ] 此时libxml2相关的头文件应该在/usr/local/include/libxml2目录下
+   3. [ ] 新建了一个
+   4. [X] /usr/local/include/libxml2  没有
+   5. [X] /usr/local/lib  没有
+   6. [X] ./snap/pycharm-professional/154/jbr/legal/javafx.web/libxml2.md
+   7. [X] ./snap/pycharm-professional/159/jbr/legal/javafx.web/libxml2.md
+   8. [ ] ./snap/gnome-3-26-1604/92/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   9. [ ] ./snap/gnome-3-26-1604/92/usr/lib/x86_64-linux-gnu/libxml2.so.2
+   10. [ ] ./snap/gnome-3-26-1604/92/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+   11. [ ] ./snap/gnome-3-26-1604/92/usr/share/doc/libxml2
+   12. [ ] ./snap/gnome-3-26-1604/92/usr/share/lintian/overrides/libxml2
+   13. [ ] ./snap/gnome-3-26-1604/90/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   14. [ ] ./snap/gnome-3-26-1604/90/usr/lib/x86_64-linux-gnu/libxml2.so.2
+   15. [ ] ./snap/gnome-3-26-1604/90/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+   16. [ ] ./snap/gnome-3-26-1604/90/usr/share/doc/libxml2
+   17. [ ] ./snap/gnome-3-26-1604/90/usr/share/lintian/overrides/libxml2
+   18. [ ] ./snap/gnome-3-28-1804/71/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   19. [ ] ./snap/gnome-3-28-1804/71/usr/lib/x86_64-linux-gnu/libxml2.so.2
+   20. [ ] ./snap/gnome-3-28-1804/71/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+   21. [ ] ./snap/gnome-3-28-1804/71/usr/share/doc/libxml2
+   22. [ ] ./snap/gnome-3-28-1804/71/usr/share/lintian/overrides/libxml2
+   23. [ ] ./snap/gnome-3-28-1804/67/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   24. [ ] ./snap/gnome-3-28-1804/67/usr/lib/x86_64-linux-gnu/libxml2.so.2
+   25. [ ] ./snap/gnome-3-28-1804/67/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+   26. [ ] ./snap/gnome-3-28-1804/67/usr/share/doc/libxml2
+   27. [ ] ./snap/gnome-3-28-1804/67/usr/share/lintian/overrides/libxml2
+   28. [ ] ./snap/gnome-characters/296/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   29. [ ] ./snap/gnome-characters/317/usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   30. [ ] ./var/lib/libxml-sax-perl
+   31. [ ] ./var/lib/dpkg/info/libxml2:amd64.triggers
+   32. [ ] ./var/lib/dpkg/info/libxml-sax-base-perl.md5sums
+   33. [ ] ./var/lib/dpkg/info/libxml-parser-perl.list
+   34. [ ] ./var/lib/dpkg/info/libxml-sax-perl.postinst
+   35. [ ] ./var/lib/dpkg/info/libxml-namespacesupport-perl.md5sums
+   36. [ ] ./var/lib/dpkg/info/libxml-sax-expat-perl.postinst
+   37. [ ] ./var/lib/dpkg/info/libxml2:amd64.md5sums
+   38. [ ] ./var/lib/dpkg/info/libxml-libxml-perl.prerm
+   39. [ ] ./var/lib/dpkg/info/libxml-xpathengine-perl.md5sums
+   40. [ ] ./var/lib/dpkg/info/libxml-simple-perl.list
+   41. [ ] ./var/lib/dpkg/info/libxml-sax-perl.postrm
+   42. [ ] ./var/lib/dpkg/info/libxml-sax-perl.md5sums
+   43. [ ] ./var/lib/dpkg/info/libxml2:amd64.shlibs
+   44. [ ] ./var/lib/dpkg/info/libxml2:amd64.list
+   45. [ ] ./var/lib/dpkg/info/libxml2-utils.list
+   46. [ ] ./var/lib/dpkg/info/libxml-parser-perl.md5sums
+   47. [ ] ./var/lib/dpkg/info/libxml-libxml-perl.list
+   48. [ ] ./var/lib/dpkg/info/libxml-sax-expat-perl.list
+   49. [ ] ./var/lib/dpkg/info/libxml-sax-perl.prerm
+   50. [ ] ./var/lib/dpkg/info/libxml2:amd64.symbols
+   51. [ ] ./var/lib/dpkg/info/libxml-sax-expat-perl.md5sums
+   52. [ ] ./var/lib/dpkg/info/libxml-twig-perl.md5sums
+   53. [ ] ./var/lib/dpkg/info/libxml-sax-expat-perl.prerm
+   54. [ ] ./var/lib/dpkg/info/libxml-twig-perl.list
+   55. [ ] ./var/lib/dpkg/info/libxml-simple-perl.md5sums
+   56. [ ] ./var/lib/dpkg/info/libxml-xpathengine-perl.list
+   57. [ ] ./var/lib/dpkg/info/libxml-sax-perl.preinst
+   58. [ ] ./var/lib/dpkg/info/libxml-namespacesupport-perl.list
+   59. [ ] ./var/lib/dpkg/info/libxml-libxml-perl.md5sums
+   60. [ ] ./var/lib/dpkg/info/libxml-sax-base-perl.list
+   61. [ ] ./var/lib/dpkg/info/libxml-sax-perl.list
+   62. [ ] ./var/lib/dpkg/info/libxml2-utils.md5sums
+   63. [ ] ./var/lib/dpkg/info/libxml-libxml-perl.postinst
+   64. [ ] ./home/work/programme/env/env2/lib/python2.7/site-packages/lxml/includes/libxml
+   65. [ ] ./home/work/VirtualBox VMs/winwork2/winwork2/MatLab2016A/R2016a_win64/sys/java/jre/win64/jre/bin/libxml2.dll
+   66. [ ] ./home/work/computer/enviroment/intelliJ/jbr/legal/javafx.web/libxml2.md
+   67. [ ] ./home/work/学习/cs/python/项目/intelnovel_myprogramme_git/env3.6.3/lib/python3.6/site-packages/lxml/includes/libxml
+   68. [ ] ./usr/share/doc-base/libxml-parser-perl
+   69. [ ] ./usr/share/doc/libxml2
+   70. [ ] ./usr/share/doc/libxml-xpathengine-perl
+   71. [ ] ./usr/share/doc/libxml-sax-base-perl
+   72. [ ] ./usr/share/doc/libxml-namespacesupport-perl
+   73. [ ] ./usr/share/doc/libxml-libxml-perl
+   74. [ ] ./usr/share/doc/libxml-sax-perl
+   75. [ ] ./usr/share/doc/libxml-sax-perl/examples/libxml-foo-perl.prerm
+   76. [ ] ./usr/share/doc/libxml-sax-perl/examples/libxml-foo-perl.postinst
+   77. [ ] ./usr/share/doc/libxml-simple-perl
+   78. [ ] ./usr/share/doc/libxml2-utils
+   79. [ ] ./usr/share/doc/libxml-twig-perl
+   80. [ ] ./usr/share/doc/libxml-sax-expat-perl
+   81. [ ] ./usr/share/doc/libxml-parser-perl
+   82. [ ] ./usr/share/lintian/overrides/libxml2
+   83. [ ] ./usr/local/lib/python2.7/dist-packages/lxml/includes/libxml
+   84. [ ] ./usr/lib/x86_64-linux-gnu/libxml2.so.2.9.4
+   85. [ ] ./usr/lib/x86_64-linux-gnu/girepository-1.0/libxml2-2.0.typelib
+   86. [ ] ./usr/lib/x86_64-linux-gnu/vlc/plugins/misc/libxml_plugin.so
+   87. [ ] ./usr/lib/x86_64-linux-gnu/libxml2.so.2
+
+
+#+BEGIN_SRC 
+sudo find -name libxml
+./programme/env/env2/lib/python2.7/site-packages/lxml/includes/libxml
+./学习/cs/python/项目/intelnovel_myprogramme_git/env3.6.3/lib/python3.6/site-packages/lxml/includes/libxml
+
+#+END_SRC
+
+
+#+BEGIN_SRC 
+sudo find -name xmlmemory
+work@work75:~$ 
+
+#+END_SRC
+
+
+* nohup ：后台运行程序
+nohup shell &
+其他使用:
+
+** TODO nohup的u输出老是有问题 能不能修改他的echo文件
+1. [ ] 将 echo后面加上\n
 * 文件
 
 ** 文件格式转换
@@ -55,7 +259,9 @@ pandoc name -o name
 **** 1. 安装与测试
 pandoc --list-input-formats
 **** 2. 命令格式
-
+**** 注意保存图片：
+andoc 思特奇.docx -o  思特奇.org --extract-media=x2
+后面指定了保存的文件夹 是$(pwd)/x2/media 同步更新到org文档
 ** bug
 *** 　因文件编码导致的txt乱码
 
@@ -178,6 +384,105 @@ eg:
 （4）软连接可以对目录进行连接。
 备注：I节点 :它是UNIX内部用于描述文件特性的数据结构.我们通常称I节点为文件索引结点(信息结点).i节点含有关于文件的大部分的重要信息,包括文件数据块在磁盘上的地址.每一个I节点有它自己的标志号,我们称为文件顺序号.I节点包含的信息 1.文件类型 2.文件属主关系 3.文件的访问权限 4.文件的时间截.
 http://blog.sina.com.cn/s/blog_5d0e8d0d010157wv.html
+* 死机问题
+** todolist
+1. [X] 重启为了更新
+2. [ ] 开启魔法
+3. [ ] 检测磁盘坏道
+4. [ ] 调试大法
+
+** 问题检测与排除
+　　Linux 内核虽然号称“不死族”，几乎不会崩溃或者死机，但是特殊情况下，还是有一定几率会宕机的。因为 Linux 广泛用于生产环境，所以每一次宕机都会引起相当大的损失。它 Uptime 达到上百天也许你习以为常，但是只要 Down 十几秒，就会立即急的满头大汗。真的很难以想象证交所宕机会怎么样，也许全国股民会闹翻天。所以我们需要一些小技巧来查找死机的原因，从而避免死机或者内核崩溃。(话说 windows 天天蓝屏也没感觉呀 ：-o 难道已经麻木了 ：oops： )
+
+　　请注意：以下方法可能不适用于 Server，因为桌面环境和 Server 还是有很大区别的。
+*** 　　X Crash
+
+　　事实上 Linux 内核很少出错，平常我们所遇到的“死机”都是 X 无响应造成的错觉。那 X 没响应了应该怎么处理呢？
+
+　　通常套路是 Ctrl + Alt +F7 (F8) 切换到某个 tty，然后用 root 登陆，执行 top 查看吃资源最多的程序，然后使用 pkill/kill/killall 等命令杀死该程序。或使用组合键 Ctrl +Alt + Backspace重启 X (黑日白月注：这个快捷键组合在最新的 Ubuntu 和 Fedora 中关闭)。
+
+　　如果偶遇切换 tty 失败或者没响应，可以试着使用 SSH 登陆此电脑，然后再杀死程序。也许只是 X不响应，而内核和 SSH daemon 仍然工作，故此可以实施此法。
+*** 　　arch 配置 SSH daemon
+
+　　万一 X 不给力，各种方法试了无效，又没有办法通过 SSH 登陆到此 pc，那怎么办呢？别着急，我们还有万能的 “reisub” 大法。不过在启用前先要激活内核 sysrq 功能 (via) .系统启动时执行：echo “1” > /proc/sys/Kernel/sysrq 或者修改/etc/sysctl.conf 文件，设置 Kernel.sysrq = 1.系统异常时依次按下 Alt+sysrq+{reisub} ，然后系统会自动重启。(有关 sysrq 请看：Linux 死机了怎么办？)
+
+　　不建议长按 Power 按键强制关机，有可能损坏硬件或者丢失数据，甚至导致磁盘坏道!
+*** 　　X 崩溃而内核完好
+
+　　常见的症状有：程序无响应，花屏，鼠标移动指针无动作，键盘输入没有识别等。但后台的音乐可以正常播放，或者键盘 Caps Lock/Num Lock/Scroll Lock 按键按后对应 LED 可以正常亮灭。遇到此种情况可以使用上述方法重启 X 或者电脑即可恢复正常。
+*** 　　Application Crash
+
+　　这个比较常见，但是也是相当难解决的。因为 Linux 上的应用软件大部分都是开源的，所以可能没有超高的稳定性。也许由于库的缺少或者版本错误，或者代码的 Bug，都有可能导致程序出现异常。
+
+　　一般遇到这种问题，建议检查配置文件是否正确，对配置文件的错误修改可能导致程序的运行失败。如果您确信配置文件没有错误但是程序仍然异常，可以尝试把配置文件删除(注意备份!)，然后再次打开软件尝试。通常程序的配置文件在：
+
+　　● ~/.[APPNAME]● ~/.config/[APPNAME]● /etc/[APPNAME].conf
+
+　　或者有可能是库的错误，您可以在终端输入程序名或者程序路径运行程序，根据终端的提示信息除错。由于导致程序崩溃的可能性多种多样，在此不能一一列举，所以建议您根据出错信息去 google 搜索并找到解决方案。
+*** 　　Kernel Panic
+
+　　X 的问题还好办，可是如果 RPWT 碰到 Kernel Panic，那可真是上天无路入地无门，撞墙的心都有 ：evil： .
+
+　　一般引起 Kernel Panic 的原因很多，但是都比较罕见。例如硬件问题 (irqconfilct， bad block， hightemperature)，软件问题(错误的 mod，内核的 Bug)，或者文件系统不支持(没有内建 ext4 支持却挂载ext4 的 root 分区)，硬件的变动(如添加/更换内存，不支持架构的cpu)，错误的驱动。
+
+　　Kernel Panic 的表现形式也是多种多样：启动失败，不正常的长时间 io 操作，键盘灯的不正常频闪，wireless 等指示灯错误闪烁，无响应(请区别 xorg crash 情况)，彻底锁死，黑屏，reisub 大法不灵 等等。
+
+　　[PageNext]
+
+　　一般情况下，秉承 KISS 原则的 Linux 内核，会尽力解决一切错误并正常运行，如果遇到极端情况发生 Panic，它会尽可能把所有相关信息显示在屏幕上——至于多少，别奢求，Kernel 已经尽力了。
+
+　　因为 Kernel Panic 是一种很极端的情况，有的人可能自从使用 Linux 就没有遇到过。所以我们要收集所有相关的信息来解决问题。发生错误后的各种输出是最直接的最有效的( Dump 在 tty.请关闭 x)。因为 Kernel 已经崩溃，不一定能找到完整的 Log.您可以根据以下线索尝试：
+
+　　1、/var/log/messages —— rp 爆发的时候，也许会记录下很多相关信息。按照时间戳查找。
+
+　　2、回溯操作 —— 回忆 KernelPanic 之前所做的所有事，并回滚。(如安装了某个程序，可以在 /var/log/pacman.log 找到安装日志)
+
+　　3、Dump 信息 —— 屏幕输出信息是系统最后的“遗言”，请使用数码相机或者笔纸记录。(ttyonly)
+
+　　接下来就应该根据错误发生的可能原因进行排除。将内核启动参数化为最简形式，不应附加任何不必要参数，并 BIOS 中禁用掉所有无关硬件。相关日志文件：
+
+　　● /var/log/boot
+
+　　● /var/log/xorg 所有相关(仅参考)
+
+　　● /var/log/messages
+
+　　如果可以，您应该记录下所有屏幕输出信息，并查看 /var/log/messages .
+
+　　可能遇到的问题，和解决方法：
+
+　　1、irq conflict (还好我没碰到)，可以尝试从 bios 修改硬件irq，或者升级 bios，都不生效就换电脑或者禁用冲突硬件;
+
+　　2、bad balock，尝试修复坏道或者屏蔽坏道分区，建议更换磁盘;
+
+　　3、io error，同上，也有可能是没有内建文件系统支持的原因，重新编译内核或者找最新版的内核安装;
+
+　　4、mod，删除可能导致错误的内核模块(如 vboxdrv)，涉及到的命令有：
+
+　　1)lsmod： 列出已载入的模块2)modprobe： 载入模块( 黑日白月注：在这里和其他命令对应的为 insmod + depmod 比较好，modprobe 更类似于 XXXmod 系列命令的升级整合版本。)
+
+　　3)rmmod： 移除内核中模块，效果等同于 modprobe -r 4)modinfo：显示模块相关信息
+
+　　5、driver，a卡或者n卡驱动，也容易造成问题;
+
+　　6、硬件本身的问题导致，建议检测硬件可用性和兼容性(例如 memtest+);
+
+　　7、内核 bug，如果您有能力，建议使用KDB (Kernel debugger) 排错，或者重新编译内核;
+
+　　8、不负责任的告诉您，最好的方法是换 windows ：mrgreen：
+* 切换工作区
+为了更好的使用工作区
+设置一下快捷键
+1. 切换工作区：super1
+2. 切换窗口： alt tab
+因为 切换窗口只能使用在同一工作区下 这样能够把工作内容分开
+以后直接就两边分开：
+1. 放浏览器
+2. 放工作内容：
+   1. emacs + else
+   2. 其他
+
+出现问题 直接super 将软件拖过去就好 当然也用不到
 * 桌面
 新装的ubuntu18.0简直有毒，关闭桌面时，不能开着emacs，virtualbox，不然桌面就会卡死。问题目前不知道在哪里。
 恢复桌面只能从杀死id开始，不能直接restart ，stop start ，这两种操作无效。

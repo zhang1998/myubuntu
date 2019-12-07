@@ -1,0 +1,276 @@
+#+Title 为了重写emacs 增强emacs的功能
+* TODO 需要阅读的材料
+1. [ ] [[file:~/%E5%AD%A6%E4%B9%A0/cs/GNU_Emacs_Lisp%E5%85%A5%E9%97%A8.pdf][lisp介绍的中文版]]
+   1. 记录进度
+      1.
+   2. 笔记:[[note]]
+
+2. [ ] [[https://www.gnu.org/software/emacs/manual/html_node/eintr/][lisp介绍]]: 本文是作为非程序员的基本介绍而编写的,放弃 全英文 很难弄
+   1. 进度
+   2. 记录自己学习的内容
+      1. 如何加载文件
+         1. [[https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html#Loading-Files][参考教程1]]
+         2. 看一看现在就有的lisp文件
+      2. 如何定义函数
+      3. 如何使用定义的函数
+      4. 使用let防止混淆[[https://www.gnu.org/software/emacs/manual/html_node/eintr/let.html#let][更多]]
+      5. 保证点的位置： save-excursion
+      6.
+
+* TODO note
+关于原始函数
+除了一些用C编程语言编写的原始函数外，所有函数均根据其他函数定义 。编写函数定义时，将在Emacs Lisp中编写它们，并将其他函数用作构建基块。您将使用的某些功能本身将由Emacs Lisp编写（也许由您自己编写），而某些功能将由C语言编写。原始函数的使用方式与Emacs Lisp中编写的功能完全相同，并且行为类似。它们是用C编写的，因此我们可以轻松地在任何具有足够功能并可以运行C的计算机上运行GNU Emacs。
+
+让我再次强调一下：在Emacs Lisp中编写代码时，您不会区分使用C语言编写的函数和使用Emacs Lisp语言编写的函数。区别无关紧要。我之所以提及该区别，只是因为它很有趣。的确，除非您进行调查，否则您将不知道是否已经使用Emacs Lisp或C编写了已经编写的函数。
+
+
+** TODO 那么如何将用c写的函数加进来呢？
+** TODO 安装和运行
+
+1. [X]
+   (+ 2 2)
+2. [X]
+   '(这是引用的列表)
+3. [X]
+   #+BEGIN_SRC
+   (defun multiply-by-seven (number)
+       "Multiply NUMBER by seven."
+       (* 7 number))
+
+   (multiply-by-seven 3)
+
+   #+END_SRC
+   看意思 是只有加载了才能运行 但是我直接就能运行 好像是执行了上半部分就能定义函数，执行下半部分就能够使用这个函数
+** emacs lisp 入门
+*** TODO 找一找 todo是如何实现的 全文搜索
+如何实现将多个内容同步到本页面的？
+1. [ ] 先找org-agenda:init-org.el
+**** 代码段
+1.
+#+BEGIN_SRC 1
+(after-load 'org-agenda
+  (add-hook 'org-agenda-mode-hook
+            (lambda () (add-hook 'window-configuration-change-hook 'org-agenda-align-tags nil t))))
+
+
+#+END_SRC
+
+#+BEGIN_SRC
+
+(setq org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
+
+(after-load 'org-agenda
+  (add-to-list 'org-agenda-after-show-hook 'org-show-entry))
+
+#+END_SRC
+
+#+BEGIN_SRC 3
+(defun sanityinc/org-agenda-refile-anywhere (&optional goto rfloc no-update)
+  "A version of `org-agenda-refile' which allows refiling to any subtree."
+  (interactive "P")
+  (let ((org-refile-target-verify-function))
+    (org-agenda-refile goto rfloc no-update)))
+
+
+#+END_SRC
+
+1. 添加标签
+   #+BEGIN_SRC
+(setq-default org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3))
+
+
+(let ((active-project-match "-INBOX/PROJECT"))
+
+  (setq org-stuck-projects
+        `(,active-project-match ("NEXT")))
+
+  (setq org-agenda-compact-blocks t
+        org-agenda-sticky t
+        org-agenda-start-on-weekday nil
+        org-agenda-span 'day
+        org-agenda-include-diary nil
+        org-agenda-sorting-strategy
+        '((agenda habit-down time-up user-defined-up effort-up category-keep)
+          (todo category-up effort-up)
+          (tags category-up effort-up)
+          (search category-up))
+        org-agenda-window-setup 'current-window
+        org-agenda-custom-commands
+        `(("N" "Notes" tags "NOTE"
+           ((org-agenda-overriding-header "Notes")
+            (org-tags-match-list-sublevels t)))
+          ("g" "GTD"
+           ((agenda "" nil)
+            (tags "INBOX"
+                  ((org-agenda-overriding-header "Inbox")
+                   (org-tags-match-list-sublevels nil)))
+            (stuck ""
+                   ((org-agenda-overriding-header "Stuck Projects")
+                    (org-agenda-tags-todo-honor-ignore-options t)
+                    (org-tags-match-list-sublevels t)
+                    (org-agenda-todo-ignore-scheduled 'future)))
+            (tags-todo "-INBOX"
+                       ((org-agenda-overriding-header "Next Actions")
+                        (org-agenda-tags-todo-honor-ignore-options t)
+                        (org-agenda-todo-ignore-scheduled 'future)
+                        (org-agenda-skip-function
+                         '(lambda ()
+                            (or (org-agenda-skip-subtree-if 'todo '("HOLD" "WAITING"))
+                                (org-agenda-skip-entry-if 'nottodo '("NEXT")))))
+                        (org-tags-match-list-sublevels t)
+                        (org-agenda-sorting-strategy
+                         '(todo-state-down effort-up category-keep))))
+            (tags-todo ,active-project-match
+                       ((org-agenda-overriding-header "Projects")
+                        (org-tags-match-list-sublevels t)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            (tags-todo "-INBOX/-NEXT"
+                       ((org-agenda-overriding-header "Orphaned Tasks")
+                        (org-agenda-tags-todo-honor-ignore-options t)
+                        (org-agenda-todo-ignore-scheduled 'future)
+                        (org-agenda-skip-function
+                         '(lambda ()
+                            (or (org-agenda-skip-subtree-if 'todo '("PROJECT" "HOLD" "WAITING" "DELEGATED"))
+                                (org-agenda-skip-subtree-if 'nottododo '("TODO")))))
+                        (org-tags-match-list-sublevels t)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            (tags-todo "/WAITING"
+                       ((org-agenda-overriding-header "Waiting")
+                        (org-agenda-tags-todo-honor-ignore-options t)
+                        (org-agenda-todo-ignore-scheduled 'future)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            (tags-todo "/DELEGATED"
+                       ((org-agenda-overriding-header "Delegated")
+                        (org-agenda-tags-todo-honor-ignore-options t)
+                        (org-agenda-todo-ignore-scheduled 'future)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            (tags-todo "-INBOX"
+                       ((org-agenda-overriding-header "On Hold")
+                        (org-agenda-skip-function
+                         '(lambda ()
+                            (or (org-agenda-skip-subtree-if 'todo '("WAITING"))
+                                (org-agenda-skip-entry-if 'nottodo '("HOLD")))))
+                        (org-tags-match-list-sublevels nil)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            ;; (tags-todo "-NEXT"
+            ;;            ((org-agenda-overriding-header "All other TODOs")
+            ;;             (org-match-list-sublevels t)))
+            )))))
+
+
+(add-hook 'org-agenda-mode-hook 'hl-line-mode)
+
+
+#+END_SRC
+2. org后定义的按键
+   #+BEGIN_SRC
+(after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro))
+
+
+;; ;; Show iCal calendars in the org agenda
+;; (when (and *is-a-mac* (require 'org-mac-iCal nil t))
+;;   (setq org-agenda-include-diary t
+;;         org-agenda-custom-commands
+;;         '(("I" "Import diary from iCal" agenda ""
+;;            ((org-agenda-mode-hook #'org-mac-iCal)))))
+
+;;   (add-hook 'org-agenda-cleanup-fancy-diary-hook
+;;             (lambda ()
+;;               (goto-char (point-min))
+;;               (save-excursion
+;;                 (while (re-search-forward "^[a-z]" nil t)
+;;                   (goto-char (match-beginning 0))
+;;                   (insert "0:00-24:00 ")))
+;;               (while (re-search-forward "^ [a-z]" nil t)
+;;                 (goto-char (match-beginning 0))
+;;                 (save-excursion
+;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
+;;                 (insert (match-string 0))))))
+
+
+(after-load 'org
+  (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
+  (when *is-a-mac*
+    (define-key org-mode-map (kbd "M-h") nil)
+    (define-key org-mode-map (kbd "C-c g") 'org-mac-grab-link)))
+
+(after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   `((R . t)
+     (ditaa . t)
+     (dot . t)
+     (emacs-lisp . t)
+     (gnuplot . t)
+     (haskell . nil)
+     (latex . t)
+     (ledger . t)
+     (ocaml . nil)
+     (octave . t)
+     (plantuml . t)
+     (python . t)
+     (ruby . t)
+     (screen . nil)
+     (,(if (locate-library "ob-sh") 'sh 'shell) . t)
+     (sql . nil)
+     (sqlite . t))))
+
+
+(provide 'init-org)
+
+
+#+END_SRC
+*** TODO 目录内容
+1. 缓冲区
+   1. [ ] 控制：第二章
+   2. [ ] 更多函数
+      1. [ ] ：第四章
+      2. [ ] 第五章
+2. [ ] 基本函数：第七章
+3. [ ] 剪切和存储文本：第八章
+4. [ ] 循环和递归：11
+5. [ ]  正则：12
+6. [ ] 计数：13
+7. [ ] 配置.emacs 16
+
+
+1. [ ] 写Defuns如何写函数定义。
+   (defun multiply-by-seven (number)
+   "Multiply NUMBER by seven."
+   (* 7 number))
+
+1. [ ] 缓冲区遍历一些与缓冲区相关的函数。
+
+1. [ ] 更复杂的一些，甚至更复杂的函数。
+
+1. [ ] 将您和Emacs的注意力限制在一个区域内。
+
+1. [ ] car cdr & cons在Lisp中的基本函数。
+
+1. [ ] 剪切和存储文本，删除文本并保存它。
+
+1. [ ] 列表实现如何在计算机中实现列表。
+
+1. [ ] 猛拉粘贴存储的文本。
+
+1. [ ] 循环&递归如何重复一个过程。
+
+1. [ ] 正则表达式搜索。
+
+1. [ ] 数单词，复习重复和重复练习。
+
+1. [ ] defun中的单词数defun中的单词。
+
+1. [ ] 准备图形的原型图形打印功能。
+
+1. [ ] 如何写一个。Emacs文件。
+
+1. [ ] 调试如何运行Emacs Lisp调试器。
+
+1. [ ] 结论现在你有了基础。

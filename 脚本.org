@@ -11,3 +11,12 @@ read NAME
 echo  “Hello,$NAME!”
 
 将所有行为都写进文件里，包括获得命令返回值，比较文件等。这样使用达到return以及比较的目的
+* 使用脚本实现应答
+#!/usr/bin/expect
+spawn rm /root/test/11.txt
+expect{
+  "rm: remove regular file" { send "y\r";exp_continue }
+  "rm: remove regular empty file" { send "y\r" }
+}
+expect eof
+** TODO 判断是否支持正则表达式

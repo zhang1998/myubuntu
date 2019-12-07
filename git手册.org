@@ -105,3 +105,6 @@ git checkout [branch:你的branch名字]
 *** TODO 问题
 什么是hostname
 
+* 管理全部仓库
+** TODO [#A] 定期提交我的文件
+SCHEDULED: <2019-11-29 五>

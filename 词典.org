@@ -1,1 +1,6 @@
 * sdcv
+1. [[https://www.cnblogs.com/bt575876212/p/4222689.html][一篇教程:]]
+   1. 如何安装词典
+   2. 配备词库
+2. 词库下载地址
+   1. http://download.huzheng.org/
